@@ -25,11 +25,15 @@
   - Redesigned `/` (2-column Editorial Hero + Verified Telemetry Proof Matrix, Quick Copilot Bar, Flagship & Additional cards), `/chat` (`ChatCopilot.tsx`), `/projects/[slug]` (`MarkdownArticle.tsx` `72ch` prose width), and polished `Navbar.tsx`, `ThemeToggle.tsx`, `Footer.tsx`, `/demos/rag-copilot`, and `/demos/agent-ops`.
   - Prepared clean utility cluster headroom beside `ThemeToggle` in `Navbar.tsx` for a future top-right `EN/TH` language switcher.
   - Enforced **Auto-Fill Only (no auto-submit)** across all preset/sample chips site-wide (`/`, `/chat`, `/projects/[slug]`, `/demos/rag-copilot` RAG & Triage tabs, `/demos/agent-ops`).
-  - Verified with `npm run verify` (`eslint .`, `tsc --noEmit`, `vitest run` 9/9, `next build` 11/11) and full Browser QA across Desktop (`1440px`), Mobile (`390px`, zero overflow), Dark Mode, and Light Mode (`0` console errors, `0` failed requests, `0` direct `*.onrender.com` calls).
+  - Verified with `npm run verify` (`eslint .`, `tsc --noEmit`, `vitest run` 9/9, `next build` 11/11) and full Browser QA across Desktop (`1440px`), Mobile (`390px`, zero overflow), Dark Mode, and Light Mode (`0` console errors, `0` failed requests, `0` direct `*.onrender.com` calls), committed as `9441a3e`.
 
-## In Progress / Next Up
-- Future enhancement (next chat): Implement site-wide `EN/TH` language toggle in `Navbar.tsx` right-hand utility cluster next to `ThemeToggle`.
-- Keep `content/projects/` updated via 1-file Markdown additions as new projects ship.
+## In Progress / Next Up (Phase 7)
+1. **Site-Wide `EN / TH` Language Switcher:**
+   - Add a compact `EN/TH` toggle button in the top-right utility cluster of `src/components/layout/Navbar.tsx` (beside `ThemeToggle`), persisted via `localStorage` without hydration flash.
+   - Translate UI shell (`Navbar`, `Footer`), Home Showcase (`/`), Case Study chrome (`/projects/[slug]`), `/chat` chrome, and sync cleanly with `/demos/rag-copilot` & `/demos/agent-ops`.
+2. **Human-Readable Project Problem & Solution Summaries (2–3 lines per card):**
+   - Extend `ProjectFrontmatterSchema` (`src/lib/content/schema.ts`) and `content/projects/*.md` (including `_TEMPLATE_project.md`) to include concise, plain-language EN & TH summaries explaining **what problem each project solves and what business/operational impact it delivers** — rather than listing only tech-stack buzzwords on the `/` project cards.
+3. Keep `content/projects/` updated via 1-file Markdown additions as new projects ship.
 
 ## Blockers / Gotchas for Next Agent
 - Keep all browser calls in `/demos/*` routed through `/api/proxy/rag/*` and `/api/proxy/agent/*` (zero direct `*.onrender.com` calls).
