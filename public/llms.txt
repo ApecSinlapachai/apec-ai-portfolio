@@ -1,0 +1,16 @@
+# Apec Sinlapachai — AI & AI Automation Engineer
+
+> Unified Portfolio Hub, Live Production AI Demos, and Grounded AI Copilot.
+
+## Core Pages
+- `/` — Portfolio Overview, Verified Metrics, and Featured Projects
+- `/chat` — AI Portfolio Copilot (Thai / English / Code-Mixed, grounded citations)
+- `/demos/rag-copilot` — Live Interactive Demo: Enterprise RAG Ops Copilot (Hybrid pgvector + PyThaiNLP + 3-Stage $0 Guardrails + Pydantic v2 Ticket Triage)
+- `/demos/agent-ops` — Live Interactive Demo: Production AI Agent Ops (SQL-First LangGraph State Machine + PDPA PII Redaction + HITL + Retry/DLQ + Tiered Cost Routing)
+- `/projects/enterprise-rag-ops-copilot` — Case Study & Eval Benchmarks (47/47 pytest, 25/25 Live Prod Eval)
+- `/projects/production-ai-agent-ops` — Case Study & Cost Benchmarks (40/40 pytest, 0.00 PDPA Leak, 62.78% LLM Cost Reduction)
+- `/projects/fast-lead-automation` — Deterministic Automation Case Study (85/85 Automated Offline Tests, $0/mo SaaS Cost)
+
+## Links
+- GitHub: https://github.com/ApecSinlapachai
+- AI Automation TIL Notes: https://github.com/ApecSinlapachai/ai-automation-til
