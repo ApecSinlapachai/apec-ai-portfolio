@@ -13,6 +13,7 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
+import { renderInlineMarkdown } from "@/components/portfolio/MarkdownArticle";
 
 interface Citation {
   id: string;
@@ -204,7 +205,11 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
               Ask me anything about Apec&apos;s Production AI Systems
             </h2>
             <p className="mt-1 max-w-lg text-sm text-[var(--muted)]">
-              Every answer is strictly grounded in version-controlled Markdown SOT (`content/`) with 3-stage $0 guardrails and clickable citations.
+              Every answer is strictly grounded in version-controlled Markdown SOT (
+              <code className="rounded bg-[var(--surface-elevated)] px-1.5 py-0.5 font-mono text-xs text-sky-400">
+                content/
+              </code>
+              ) with 3-stage $0 guardrails and clickable citations.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {STARTER_CHIPS.map((chip) => (
@@ -243,7 +248,25 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                     : "border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
                 }`}
               >
-                <div className="whitespace-pre-wrap">{msg.content}</div>
+                {msg.role === "assistant" ? (
+                  <div className="space-y-1.5">
+                    {msg.content.split(/\r?\n/).map((line, idx) => {
+                      const trimmed = line.trim();
+                      if (!trimmed) return <div key={idx} className="h-1" />;
+                      if (trimmed.startsWith("- ")) {
+                        return (
+                          <div key={idx} className="flex gap-2 pl-1">
+                            <span className="text-sky-400">•</span>
+                            <span>{renderInlineMarkdown(trimmed.slice(2))}</span>
+                          </div>
+                        );
+                      }
+                      return <p key={idx}>{renderInlineMarkdown(trimmed)}</p>;
+                    })}
+                  </div>
+                ) : (
+                  <div className="whitespace-pre-wrap">{msg.content}</div>
+                )}
 
                 {msg.role === "assistant" && (
                   <div className="mt-3 space-y-2 border-t border-[var(--border)] pt-2.5">

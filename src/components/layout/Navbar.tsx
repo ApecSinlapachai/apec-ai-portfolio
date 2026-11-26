@@ -17,44 +17,46 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--background)]/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 sm:h-16 sm:gap-4 sm:px-6">
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-semibold tracking-tight text-[var(--foreground)]"
+          className="flex min-w-0 shrink-0 items-center gap-2 font-semibold tracking-tight text-[var(--foreground)] sm:gap-2.5"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-sky-500/30 bg-sky-500/10 text-sky-400">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-sky-500/30 bg-sky-500/10 text-sky-400">
             <Cpu className="h-4 w-4" />
           </span>
-          <span className="text-sm sm:text-base">Apec Sinlapachai</span>
+          <span className="truncate text-sm sm:text-base">Apec Sinlapachai</span>
           <span className="hidden rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-400 md:inline-flex">
             AI Engineer
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 sm:gap-2">
-          {NAV_ITEMS.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition sm:px-3 sm:text-sm ${
-                  active
-                    ? "bg-sky-500/15 text-sky-400"
-                    : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="hidden items-center gap-1 sm:flex sm:gap-2">
+            {NAV_ITEMS.map((item) => {
+              const active =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium transition sm:px-3 sm:text-sm ${
+                    active
+                      ? "bg-sky-500/15 text-sky-400"
+                      : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
 
           <Link
             href="/chat"
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+            className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-semibold transition sm:px-3 sm:text-sm ${
               pathname.startsWith("/chat")
                 ? "bg-sky-400 text-slate-950"
                 : "bg-sky-500 text-slate-950 hover:bg-sky-400"
@@ -78,6 +80,32 @@ export default function Navbar() {
           <ThemeToggle />
         </nav>
       </div>
+
+      {/* Mobile navigation strip (zero horizontal overflow on narrow viewports) */}
+      <nav
+        aria-label="Mobile navigation"
+        className="flex items-center justify-around gap-1 border-t border-[var(--border)]/70 px-2 py-1.5 sm:hidden"
+      >
+        {NAV_ITEMS.map((item) => {
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+                active
+                  ? "bg-sky-500/15 text-sky-400"
+                  : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
     </header>
   );
 }
