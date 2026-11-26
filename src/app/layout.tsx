@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -58,6 +59,17 @@ const THEME_INIT_SCRIPT = `
 })();
 `;
 
+const LANG_INIT_SCRIPT = `
+(function() {
+  try {
+    var saved = localStorage.getItem('apec-portfolio-lang');
+    var lang = saved === 'th' ? 'th' : 'en';
+    document.documentElement.lang = lang;
+    document.documentElement.dataset.lang = lang;
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,11 +78,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-lang="en"
       suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexThai.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: LANG_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <a
@@ -79,11 +93,13 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <Navbar />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );
