@@ -19,16 +19,23 @@ describe("File-Driven Markdown SOT (Layer 1 & 2 Contract)", () => {
     const profile = getProfile();
     expect(profile.name).toBe("Apec Sinlapachai");
     expect(profile.role).toContain("AI");
+    expect(profile.headlineTh?.trim().length).toBeGreaterThan(0);
+    expect(profile.locationTh?.trim().length).toBeGreaterThan(0);
     expect(profile.githubUrl).toMatch(/^https:\/\//);
   });
 
-  it("loads all non-template projects sorted by order and exposes flagship demos", () => {
+  it("loads all non-template projects sorted by order and exposes flagship demos and bilingual summaries", () => {
     const projects = getAllProjects();
     expect(projects.length).toBeGreaterThanOrEqual(3);
     expect(projects[0].slug).toBe("enterprise-rag-ops-copilot");
     expect(projects[0].demoPath).toBe("/demos/rag-copilot");
     expect(projects[1].slug).toBe("production-ai-agent-ops");
     expect(projects[1].demoPath).toBe("/demos/agent-ops");
+
+    for (const project of projects) {
+      expect(project.summary.en.trim().length).toBeGreaterThan(0);
+      expect(project.summary.th.trim().length).toBeGreaterThan(0);
+    }
   });
 
   it("resolves project by slug and returns null for unknown slug", () => {
@@ -38,13 +45,22 @@ describe("File-Driven Markdown SOT (Layer 1 & 2 Contract)", () => {
     expect(getProjectBySlug("non-existent-project")).toBeNull();
   });
 
-  it("builds knowledge chunks across profile, projects, and TIL with valid source URLs", () => {
+  it("builds knowledge chunks across profile, projects, and TIL with valid source URLs and summary text", () => {
     const chunks = getKnowledgeChunks(true);
+    const projects = getAllProjects();
     expect(chunks.length).toBeGreaterThan(8);
     expect(chunks.some((c) => c.scope === "profile")).toBe(true);
     expect(chunks.some((c) => c.scope === "enterprise-rag-ops-copilot")).toBe(true);
     expect(chunks.some((c) => c.scope === "production-ai-agent-ops")).toBe(true);
     expect(chunks.some((c) => c.scope === "til")).toBe(true);
+
+    for (const project of projects) {
+      const summaryChunk = chunks.find((c) => c.id === `${project.slug}-summary`);
+      expect(summaryChunk).toBeDefined();
+      expect(summaryChunk?.content).toContain(project.summary.en);
+      expect(summaryChunk?.content).toContain(project.summary.th);
+    }
+
     for (const chunk of chunks) {
       expect(chunk.sourceUrl.length).toBeGreaterThan(0);
     }

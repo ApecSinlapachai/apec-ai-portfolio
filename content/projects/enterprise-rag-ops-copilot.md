@@ -3,6 +3,9 @@ slug: "enterprise-rag-ops-copilot"
 title: "Enterprise RAG Ops Copilot"
 shortTitle: "Project #1 · Hybrid RAG Copilot"
 tagline: "Thai–English Hybrid RAG (pgvector + PyThaiNLP + pg_trgm RRF), 3-Stage $0 Guardrails, Pydantic v2 Ticket Triage, and 25-Case Golden Eval Gate."
+summary:
+  en: "Enterprise support and operations teams lose time when chatbots miss exact error codes in bilingual Thai–English SOPs, fabricate answers when evidence is absent, or burn API budget on off-topic and prompt-injection queries. This system combines hybrid exact-code and semantic retrieval with 3-stage anti-hallucination gates that block invalid requests before invoking an LLM. In live production evaluation, it achieved 25/25 (100%) on the Golden Eval suite with 767 ms average latency, 47/47 passing tests, and $0 LLM spend on refused queries."
+  th: "ทีมปฏิบัติการและซัพพอร์ตองค์กรเสียเวลาเมื่อแชตบอตหาโค้ดข้อผิดพลาดในเอกสาร SOP ไทย–อังกฤษไม่เจอ ตอบมั่วเมื่อไม่มีหลักฐาน หรือผลาญงบ API ไปกับคำถามนอกขอบเขตและการโจมตีแบบ Prompt Injection ระบบนี้จึงผสานการค้นหาแบบไฮบริดที่จับคู่ทั้งรหัสเฉพาะและความหมายเข้ากับด่านคัดกรอง 3 ชั้นเพื่อสกัดคำถามที่ไม่ปลอดภัยก่อนเรียกโมเดล ผลทดสอบบนระบบจริงผ่าน Golden Eval 25/25 เคส (100%) ที่ความเร็วเฉลี่ย 767 ms, ผ่าน pytest 47/47 เคส และมีต้นทุน LLM เป็น $0 สำหรับคำถามที่ถูกปฏิเสธ"
 status: "live"
 featured: true
 order: 1

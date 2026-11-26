@@ -124,6 +124,8 @@ export function getKnowledgeChunks(forceReload = false): KnowledgeChunk[] {
       sourceUrl: `/projects/${project.slug}`,
       content: [
         `${project.title} (${project.shortTitle}) — ${project.tagline}`,
+        `Summary (EN): ${project.summary.en}`,
+        `Summary (TH): ${project.summary.th}`,
         `Category: ${project.category}`,
         `Tech Stack: ${stackText}`,
         `Verified Metrics: ${metricsText}`,

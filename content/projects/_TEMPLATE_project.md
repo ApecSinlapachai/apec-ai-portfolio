@@ -3,6 +3,9 @@ slug: "example-future-project"
 title: "Future Project Title"
 shortTitle: "Project #3 · Short Label"
 tagline: "One-sentence summary of the business problem, production stack, and verified metric."
+summary:
+  en: "Problem-first 2–3 sentence English summary explaining what operational bottleneck this project solves, how it solves it without listing only stack buzzwords, and its verified impact or metrics."
+  th: "สรุปภาษาไทยแบบ Problem-First 2–3 ประโยค อธิบายว่าโปรเจกต์นี้แก้ปัญหาอะไรในการทำงานจริง แก้ด้วยกลไกหลักอย่างไร และสร้างผลลัพธ์หรือตัวเลขที่วัดผลได้จริงเท่าไร"
 status: "planned"
 featured: false
 order: 99

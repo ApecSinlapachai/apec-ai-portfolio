@@ -5,6 +5,11 @@ export const MetricSchema = z.object({
   value: z.string().min(1),
 });
 
+export const LocalizedTextSchema = z.object({
+  en: z.string().min(1),
+  th: z.string().min(1),
+});
+
 export const ProjectFrontmatterSchema = z.object({
   slug: z
     .string()
@@ -13,6 +18,7 @@ export const ProjectFrontmatterSchema = z.object({
   title: z.string().min(1),
   shortTitle: z.string().min(1),
   tagline: z.string().min(1),
+  summary: LocalizedTextSchema,
   status: z.enum(["live", "beta", "planned"]),
   featured: z.boolean().default(false),
   order: z.number().int().min(1),
@@ -29,12 +35,15 @@ export const ProfileFrontmatterSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
   headline: z.string().min(1),
+  headlineTh: z.string().min(1).optional(),
   location: z.string().min(1),
+  locationTh: z.string().min(1).optional(),
   githubUrl: z.string().url(),
   linkedinUrl: z.string().url(),
   tilRepoUrl: z.string().url(),
 });
 
+export type LocalizedText = z.infer<typeof LocalizedTextSchema>;
 export type ProjectFrontmatter = z.infer<typeof ProjectFrontmatterSchema>;
 export type ProfileFrontmatter = z.infer<typeof ProfileFrontmatterSchema>;
 

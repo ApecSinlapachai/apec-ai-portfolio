@@ -3,6 +3,9 @@ slug: "production-ai-agent-ops"
 title: "Production AI Agent Ops"
 shortTitle: "Project #2 · Stateful AI Agent"
 tagline: "SQL-First LangGraph State Machine with Pre-LLM PDPA PII Redaction, FOR UPDATE HITL Approval Gates, Idempotency + Retry/DLQ, n8n Integration, and 62.78% LLM Cost Reduction."
+summary:
+  en: "Enterprise AI agents fail in production when they leak customer PII to external LLMs, trigger duplicate refunds on retried webhooks, or send simple tasks to expensive frontier models. This stateful agent masks sensitive data before LLM and database writes, pauses high-risk actions for locked human approval, and routes routine work to lightweight models. Across 24 TH/EN benchmark cases, it achieved a 0.00 PDPA leak rate (32/32 entities masked), 1.00 HITL enforcement, 62.78% LLM cost reduction, and 40/40 passing tests."
+  th: "AI Agent ทั่วไปมักใช้งานจริงไม่ได้เพราะเสี่ยงทำข้อมูลส่วนบุคคล (PDPA) รั่วไหลไปยัง API ภายนอก สั่งคืนเงินซ้ำเมื่อ Webhook ส่งมาซ้ำ หรือส่งงานง่าย ๆ ไปยังโมเดลราคาแพง ระบบ Agent แบบควบคุมสถานะนี้จะปิดบังข้อมูล PII ก่อนส่งเข้าโมเดลและฐานข้อมูล หยุดรอการอนุมัติจากมนุษย์แบบล็อกแถวข้อมูลสำหรับคำสั่งเสี่ยงสูง และแยกงานง่ายไปใช้โมเดลต้นทุนต่ำ ผลทดสอบ 24 เคสไทย–อังกฤษทำอัตราข้อมูลรั่วไหล 0.00 (ปิดบังครบ 32/32 จุด), บังคับใช้ HITL 100%, ลดต้นทุน LLM ลง 62.78% และผ่านการทดสอบ pytest 40/40 เคส"
 status: "live"
 featured: true
 order: 2
