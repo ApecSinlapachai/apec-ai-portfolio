@@ -9,6 +9,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { DemoTopBar } from "@/components/layout/Navbar";
+import { DemoProjectExplainer } from "@/components/demos/DemoProjectExplainer";
 import {
   API_PROXY_PREFIX,
   fetchBenchmark,
@@ -216,6 +217,10 @@ export default function AgentOpsDemoPage() {
             wakingUp={wakingUp}
             onRetry={() => void checkHealth(0)}
           />
+        </div>
+
+        <div className="mb-5">
+          <DemoProjectExplainer explainer={t.explainer} accent="emerald" />
         </div>
 
         <nav className="mb-6 flex flex-wrap gap-2 border-b border-slate-800 pb-3">

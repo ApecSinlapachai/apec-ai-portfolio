@@ -18,6 +18,20 @@ export interface StarterChipTranslation {
   prompt: string;
 }
 
+export interface DemoExplainerTranslation {
+  badge: string;
+  title: string;
+  showLabel: string;
+  hideLabel: string;
+  whoTitle: string;
+  whoBody: string;
+  problemTitle: string;
+  problemBody: string;
+  solutionTitle: string;
+  solutionBody: string;
+  tryGuide: string;
+}
+
 export interface TranslationDictionary {
   nav: {
     brandName: string;
@@ -109,6 +123,7 @@ export interface TranslationDictionary {
     apiReadyPrefix: string;
     apiWarming: string;
     apiOffline: string;
+    explainer: DemoExplainerTranslation;
     tabs: {
       rag: string;
       triage: string;
@@ -126,6 +141,7 @@ export interface TranslationDictionary {
     offlineApiPrefix: string;
     offlineRetriesSuffix: string;
     benchmarkLoadError: string;
+    explainer: DemoExplainerTranslation;
     tabs: {
       sandbox: string;
       approvals: string;
@@ -311,6 +327,24 @@ export const translations: Record<Lang, TranslationDictionary> = {
       apiReadyPrefix: "API Ready",
       apiWarming: "Warming API…",
       apiOffline: "API Offline / Cold",
+      explainer: {
+        badge: "Plain-Language Guide",
+        title:
+          "An AI company handbook assistant that cites real policies and refuses to guess",
+        showLabel: "Show Guide",
+        hideLabel: "Hide Guide",
+        whoTitle: "Who does this help?",
+        whoBody:
+          "Customer support agents, operations staff, and new team members who need fast, accurate answers from internal manuals and troubleshooting guides in both Thai and English.",
+        problemTitle: "What real-world problem caused this?",
+        problemBody:
+          "Standard chatbots often miss exact error or invoice codes, invent fake answers when a policy is missing, and waste AI budget on off-topic or trick questions.",
+        solutionTitle: "How does this system solve it?",
+        solutionBody:
+          "It searches by both exact keywords and meaning, blocks unsafe or unsupported questions before paying for an AI response, and attaches clickable document sources to every answer.",
+        tryGuide:
+          "Try it below: pick a sample question in Hybrid RAG Copilot (including out-of-scope or trick queries), sort a support message in Ticket Triage, or inspect the 25-case test scorecard.",
+      },
       tabs: {
         rag: "Hybrid RAG Copilot",
         triage: "Ticket Triage",
@@ -330,6 +364,24 @@ export const translations: Record<Lang, TranslationDictionary> = {
       offlineApiPrefix: "Could not connect to API via",
       offlineRetriesSuffix: "retries",
       benchmarkLoadError: "Failed to load benchmark scorecard.",
+      explainer: {
+        badge: "Plain-Language Guide",
+        title:
+          "A safety-first AI workflow engine that protects customer data and requires human sign-off on risky actions",
+        showLabel: "Show Guide",
+        hideLabel: "Hide Guide",
+        whoTitle: "Who does this help?",
+        whoBody:
+          "Operations managers, compliance teams, and support leads who want AI to speed up routine customer requests without risking data leaks, duplicate refunds, or runaway bills.",
+        problemTitle: "What real-world problem caused this?",
+        problemBody:
+          "Unchecked AI agents can accidentally send private customer details to external AI models, issue double refunds when a request arrives twice, or waste money using expensive models for simple tasks.",
+        solutionTitle: "How does this system solve it?",
+        solutionBody:
+          "It hides sensitive personal info before any AI sees it, pauses high-risk actions like refunds for human approval, prevents duplicate runs, and sends simple tasks to low-cost models.",
+        tryGuide:
+          "Try it below: load a scenario in Workflow Sandbox to watch personal data get masked live, approve or reject paused actions in HITL Approvals, or compare savings in Cost Benchmark.",
+      },
       tabs: {
         sandbox: "Workflow Sandbox",
         approvals: "HITL Approvals",
@@ -510,6 +562,24 @@ export const translations: Record<Lang, TranslationDictionary> = {
       apiReadyPrefix: "API พร้อมใช้งาน",
       apiWarming: "กำลังปลุก API…",
       apiOffline: "API ออฟไลน์ / กำลังเริ่ม",
+      explainer: {
+        badge: "อธิบายระบบแบบเข้าใจง่าย",
+        title:
+          "ผู้ช่วย AI ค้นหาคู่มือองค์กรที่อ้างอิงเอกสารจริง และไม่เดาคำตอบเมื่อไม่มีข้อมูล",
+        showLabel: "แสดงคำอธิบาย",
+        hideLabel: "ซ่อนคำอธิบาย",
+        whoTitle: "ระบบนี้ช่วยใคร?",
+        whoBody:
+          "เจ้าหน้าที่ซัพพอร์ต ทีมปฏิบัติการ และพนักงานใหม่ที่ต้องค้นหาคำตอบจากคู่มือการทำงาน เงื่อนไข SLA และวิธีแก้ปัญหาทั้งภาษาไทยและอังกฤษอย่างรวดเร็วและแม่นยำ",
+        problemTitle: "เกิดจากปัญหาจริงอะไร?",
+        problemBody:
+          "แชตบอตทั่วไปมักหาโค้ดข้อผิดพลาดหรือเลขที่เอกสารเฉพาะไม่เจอ ชอบแต่งคำตอบเองเวลาไม่มีข้อมูลในคลัง และเปลืองค่า API ไปกับคำถามนอกเรื่องหรือคำถามที่พยายามหลอกระบบ",
+        solutionTitle: "ระบบนี้แก้ปัญหาอย่างไร?",
+        solutionBody:
+          "ค้นหาแบบผสานทั้งคำตรงตัวและความหมาย คัดกรองคำถามที่อันตรายหรือไม่มีหลักฐานทิ้งก่อนเรียก AI เพื่อประหยัดงบ และแนบเอกสารอ้างอิงจริงให้ตรวจสอบได้ทุกคำตอบ",
+        tryGuide:
+          "ลองเล่นด้านล่าง: เลือกคำถามตัวอย่างในแท็บถาม-ตอบ Hybrid RAG (ลองเคสคำถามนอกคลังหรือคำถามหลอกได้), ทดสอบคัดแยก Ticket หรือดูผลคะแนนทดสอบ 25 เคสในแท็บ Eval",
+      },
       tabs: {
         rag: "ถาม-ตอบ Hybrid RAG",
         triage: "คัดแยก Ticket Triage",
@@ -529,6 +599,24 @@ export const translations: Record<Lang, TranslationDictionary> = {
       offlineApiPrefix: "ไม่สามารถเชื่อมต่อ API ผ่าน",
       offlineRetriesSuffix: "ครั้ง",
       benchmarkLoadError: "ไม่สามารถโหลดตารางคะแนน Benchmark ได้",
+      explainer: {
+        badge: "อธิบายระบบแบบเข้าใจง่าย",
+        title:
+          "ระบบ AI จัดการงานอัตโนมัติที่ปกป้องข้อมูลลูกค้า และให้คนอนุมัติก่อนทำรายการสำคัญ",
+        showLabel: "แสดงคำอธิบาย",
+        hideLabel: "ซ่อนคำอธิบาย",
+        whoTitle: "ระบบนี้ช่วยใคร?",
+        whoBody:
+          "ผู้จัดการฝ่ายปฏิบัติการ ทีมกำกับดูแลข้อมูล และหัวหน้าทีมซัพพอร์ตที่ต้องการใช้ AI ช่วยลดงานประจำ โดยไม่เสี่ยงต่อข้อมูลลูกค้าหลุด การทำรายการซ้ำ หรือค่าใช้จ่ายบานปลาย",
+        problemTitle: "เกิดจากปัญหาจริงอะไร?",
+        problemBody:
+          "AI Agent ที่ไม่มีระบบควบคุมอาจส่งข้อมูลส่วนตัวลูกค้าออกไปให้โมเดลภายนอกโดยตรง เผลอทำรายการคืนเงินซ้ำเมื่อระบบส่งคำสั่งซ้ำ หรือใช้โมเดลราคาแพงเกินจำเป็นกับงานง่าย ๆ",
+        solutionTitle: "ระบบนี้แก้ปัญหาอย่างไร?",
+        solutionBody:
+          "ปิดบังข้อมูลส่วนบุคคลก่อนส่งให้ AI ทุกครั้ง หยุดรอให้คนกดอนุมัติก่อนทำรายการเสี่ยงสูง กันการทำงานซ้ำซ้อน และเลือกใช้โมเดลประหยัดต้นทุนสำหรับงานที่ไม่ซับซ้อน",
+        tryGuide:
+          "ลองเล่นด้านล่าง: เลือกสถานการณ์ตัวอย่างในแท็บทดสอบเวิร์กโฟลว์เพื่อดูการซ่อนข้อมูลส่วนตัวแบบสด ๆ, กดอนุมัติงานในคิว HITL หรือดูตัวเลขประหยัดต้นทุนในแท็บวัดผลต้นทุน",
+      },
       tabs: {
         sandbox: "ทดสอบเวิร์กโฟลว์",
         approvals: "คิวอนุมัติ HITL",

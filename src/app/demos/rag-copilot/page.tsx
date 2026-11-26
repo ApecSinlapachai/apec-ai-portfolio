@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { DemoTopBar } from "@/components/layout/Navbar";
+import { DemoProjectExplainer } from "@/components/demos/DemoProjectExplainer";
 import { EvalAndCorpusWorkspace } from "@/components/demos/rag-copilot/EvalAndCorpusWorkspace";
 import { RagWorkspace } from "@/components/demos/rag-copilot/RagWorkspace";
 import { TriageWorkspace } from "@/components/demos/rag-copilot/TriageWorkspace";
@@ -176,6 +177,9 @@ export default function RagCopilotDemoPage() {
 
       {/* Main Workspace */}
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        <div className="mb-6">
+          <DemoProjectExplainer explainer={t.explainer} accent="indigo" />
+        </div>
         {activeTab === "rag" && <RagWorkspace uiLang={uiLang} />}
         {activeTab === "triage" && <TriageWorkspace uiLang={uiLang} />}
         {activeTab === "eval" && <EvalAndCorpusWorkspace uiLang={uiLang} />}
