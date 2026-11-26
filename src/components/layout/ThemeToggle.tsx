@@ -19,6 +19,7 @@ export default function ThemeToggle() {
     } else {
       document.documentElement.classList.remove("light");
     }
+    document.documentElement.style.colorScheme = next;
     try {
       localStorage.setItem("apec-portfolio-theme", next);
     } catch {
@@ -32,9 +33,13 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label="Toggle light/dark theme"
       title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] transition hover:border-sky-500/50 hover:text-[var(--foreground)]"
+      className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
     >
-      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {theme === "dark" ? (
+        <Sun className="h-4 w-4" aria-hidden="true" />
+      ) : (
+        <Moon className="h-4 w-4" aria-hidden="true" />
+      )}
     </button>
   );
 }

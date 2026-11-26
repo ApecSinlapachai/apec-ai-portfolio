@@ -114,7 +114,7 @@ export default function RagCopilotDemoPage() {
               type="button"
               onClick={() => startHealthCheck()}
               title={`API proxied via ${API_PROXY_PREFIX}`}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${
+              className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
                 healthState === "ready"
                   ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
                   : healthState === "warming"
@@ -123,15 +123,15 @@ export default function RagCopilotDemoPage() {
               }`}
             >
               {healthState === "warming" ? (
-                <RefreshCw className="h-3 w-3 animate-spin" />
+                <RefreshCw className="h-3 w-3 animate-spin" aria-hidden="true" />
               ) : (
-                <Activity className="h-3 w-3" />
+                <Activity className="h-3 w-3" aria-hidden="true" />
               )}
               <span>
                 {healthState === "ready"
                   ? `API Ready (v${healthInfo?.version ?? "0.1.0"})`
                   : healthState === "warming"
-                    ? "Warming API..."
+                    ? "Warming API…"
                     : "API Offline / Cold"}
               </span>
             </button>
@@ -139,31 +139,31 @@ export default function RagCopilotDemoPage() {
             <button
               type="button"
               onClick={() => setUiLang((prev) => (prev === "en" ? "th" : "en"))}
-              className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-800/80 px-3 py-1 text-xs font-semibold text-slate-200 transition hover:border-indigo-500/50"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-semibold text-slate-200 transition-colors hover:border-indigo-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             >
-              <Languages className="h-3.5 w-3.5 text-indigo-400" />
+              <Languages className="h-3.5 w-3.5 text-indigo-400" aria-hidden="true" />
               <span>{uiLang === "en" ? "EN / ไทย" : "ไทย / EN"}</span>
             </button>
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-6xl gap-1 px-4 sm:px-6">
+        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 sm:px-6">
           <TabButton
             active={activeTab === "rag"}
             onClick={() => setActiveTab("rag")}
-            icon={<Bot className="h-4 w-4" />}
+            icon={<Bot className="h-4 w-4" aria-hidden="true" />}
             label={uiLang === "th" ? "ถาม-ตอบ Hybrid RAG" : "Hybrid RAG Copilot"}
           />
           <TabButton
             active={activeTab === "triage"}
             onClick={() => setActiveTab("triage")}
-            icon={<Ticket className="h-4 w-4" />}
+            icon={<Ticket className="h-4 w-4" aria-hidden="true" />}
             label={uiLang === "th" ? "คัดแยก Ticket Triage" : "Ticket Triage"}
           />
           <TabButton
             active={activeTab === "eval"}
             onClick={() => setActiveTab("eval")}
-            icon={<BarChart3 className="h-4 w-4" />}
+            icon={<BarChart3 className="h-4 w-4" aria-hidden="true" />}
             label={uiLang === "th" ? "ผล Eval Scorecard และคลังเอกสาร" : "Eval Scorecard & Corpus"}
           />
         </div>
@@ -194,7 +194,7 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-semibold transition sm:text-sm ${
+      className={`inline-flex cursor-pointer whitespace-nowrap items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 sm:text-sm ${
         active
           ? "border-indigo-500 text-indigo-300"
           : "border-transparent text-slate-400 hover:border-slate-700 hover:text-slate-200"

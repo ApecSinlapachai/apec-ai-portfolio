@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bot, Cpu, Layers, Sparkles } from "lucide-react";
+import { ArrowUpRight, Bot, Cpu, Layers, Sparkles } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const NAV_ITEMS = [
@@ -16,23 +16,28 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--background)]/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--background)]/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 sm:h-16 sm:gap-4 sm:px-6">
         <Link
           href="/"
-          className="flex min-w-0 shrink-0 items-center gap-2 font-semibold tracking-tight text-[var(--foreground)] sm:gap-2.5"
+          className="flex min-w-0 shrink-0 items-center gap-2 rounded-lg font-semibold tracking-tight text-[var(--foreground)] transition-colors hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] sm:gap-2.5"
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-sky-500/30 bg-sky-500/10 text-sky-400">
-            <Cpu className="h-4 w-4" />
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--accent)]">
+            <Cpu className="h-4 w-4" aria-hidden="true" />
           </span>
-          <span className="truncate text-sm sm:text-base">Apec Sinlapachai</span>
-          <span className="hidden rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-400 md:inline-flex">
+          <span className="truncate text-sm font-semibold sm:text-base">
+            Apec Sinlapachai
+          </span>
+          <span className="hidden rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--accent-emerald)] md:inline-flex">
             AI Engineer
           </span>
         </Link>
 
-        <nav className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-          <div className="hidden items-center gap-1 sm:flex sm:gap-2">
+        <nav
+          aria-label="Primary navigation"
+          className="flex shrink-0 items-center gap-1.5 sm:gap-2"
+        >
+          <div className="hidden items-center gap-1 sm:flex">
             {NAV_ITEMS.map((item) => {
               const active =
                 item.href === "/"
@@ -42,10 +47,10 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium transition sm:px-3 sm:text-sm ${
+                  className={`whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] sm:px-3 sm:text-sm ${
                     active
-                      ? "bg-sky-500/15 text-sky-400"
-                      : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+                      ? "border border-[var(--border-strong)] bg-[var(--surface-elevated)] text-[var(--accent)]"
+                      : "border border-transparent text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
                   }`}
                 >
                   {item.label}
@@ -56,13 +61,13 @@ export default function Navbar() {
 
           <Link
             href="/chat"
-            className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-semibold transition sm:px-3 sm:text-sm ${
+            className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] sm:px-3 sm:text-sm ${
               pathname.startsWith("/chat")
-                ? "bg-sky-400 text-slate-950"
-                : "bg-sky-500 text-slate-950 hover:bg-sky-400"
+                ? "bg-[var(--accent-hover)] text-[var(--accent-fg)]"
+                : "bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)]"
             }`}
           >
-            <Sparkles className="h-3.5 w-3.5" />
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Ask AI</span>
           </Link>
 
@@ -71,20 +76,23 @@ export default function Navbar() {
             target="_blank"
             rel="noreferrer"
             title="Machine-readable llms.txt for AI Agents"
-            className="hidden items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted)] transition hover:border-sky-500/50 hover:text-[var(--foreground)] lg:inline-flex"
+            className="hidden items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 font-mono text-xs font-medium text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:inline-flex"
           >
-            <Layers className="h-3.5 w-3.5" />
-            llms.txt
+            <Layers className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>llms.txt</span>
           </a>
 
-          <ThemeToggle />
+          {/* Utility cluster: ThemeToggle (+ headroom for future EN/TH toggle) */}
+          <div className="flex shrink-0 items-center gap-1.5 border-l border-[var(--border)] pl-1.5 sm:pl-2">
+            <ThemeToggle />
+          </div>
         </nav>
       </div>
 
       {/* Mobile navigation strip (zero horizontal overflow on narrow viewports) */}
       <nav
         aria-label="Mobile navigation"
-        className="flex items-center justify-around gap-1 border-t border-[var(--border)]/70 px-2 py-1.5 sm:hidden"
+        className="flex items-center justify-around gap-1 border-t border-[var(--border)]/80 px-2 py-1.5 sm:hidden"
       >
         {NAV_ITEMS.map((item) => {
           const active =
@@ -95,9 +103,9 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
                 active
-                  ? "bg-sky-500/15 text-sky-400"
+                  ? "bg-[var(--surface-elevated)] text-[var(--accent)]"
                   : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
               }`}
             >
@@ -124,18 +132,24 @@ export function DemoTopBar({
   const chatHref = `/chat?scope=${encodeURIComponent(projectSlug)}&q=${encodeURIComponent(defaultQuestion)}`;
 
   return (
-    <div className="border-b border-[var(--border)] bg-[var(--surface)]/90">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+    <div className="border-b border-[var(--border)] bg-[var(--surface)]">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
         <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
           <Link
             href={`/projects/${projectSlug}`}
-            className="font-semibold text-[var(--foreground)] hover:text-sky-400"
+            className="font-semibold text-[var(--foreground)] transition-colors hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
             {title}
           </Link>
-          <span className="text-[var(--muted)]">•</span>
-          <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-400">
-            Same-Origin Proxy (0 CORS/AdBlock blocks)
+          <span
+            aria-hidden="true"
+            className="text-[var(--border-strong)]"
+          >
+            /
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--background)] px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--accent-emerald)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-emerald)]" aria-hidden="true" />
+            Same-Origin Proxy
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -143,16 +157,17 @@ export function DemoTopBar({
             href={repoUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] hover:border-sky-500/50 hover:text-[var(--foreground)]"
+            className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
-            View GitHub Repo
+            <span>GitHub Repo</span>
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
           <Link
             href={chatHref}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-sky-500/40 bg-sky-500/10 px-3 py-1.5 text-xs font-semibold text-sky-400 hover:bg-sky-500/20"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-strong)] bg-[var(--surface-elevated)] px-3 py-1.5 text-xs font-semibold text-[var(--accent)] transition-colors hover:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
-            <Bot className="h-3.5 w-3.5" />
-            Ask AI about this architecture →
+            <Bot className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Ask AI about architecture</span>
           </Link>
         </div>
       </div>

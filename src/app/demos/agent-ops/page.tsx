@@ -217,17 +217,17 @@ export default function AgentOpsDemoPage() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-semibold transition ${
+                className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                   active
                     ? "border-cyan-500/60 bg-cyan-500/15 text-cyan-200"
                     : "border-slate-800 bg-slate-900/70 text-slate-300 hover:border-slate-700 hover:bg-slate-900"
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4" aria-hidden="true" />
                 <span>{tab.label}</span>
                 {typeof tab.badge === "number" && tab.badge > 0 && (
                   <span
-                    className={`rounded-full border px-1.5 py-0.5 font-mono text-[10px] ${tab.badgeColor}`}
+                    className={`tabular-nums rounded-full border px-1.5 py-0.5 font-mono text-[10px] ${tab.badgeColor}`}
                   >
                     {tab.badge}
                   </span>

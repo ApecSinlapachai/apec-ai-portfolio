@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   AlertTriangle,
   BookOpen,
@@ -106,6 +106,7 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<RAGQueryResponse | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(true);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   async function runQuery(textToRun: string, hintToUse: "auto" | "th" | "en") {
     const trimmed = textToRun.trim();
@@ -134,7 +135,7 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
   function handleSelectSample(sample: SampleQuery) {
     setQuery(sample.query);
     setLanguageHint(sample.hint);
-    void runQuery(sample.query, sample.hint);
+    textareaRef.current?.focus();
   }
 
   const statusMeta = result ? STATUS_STYLES[result.grounding_status] : null;
@@ -174,9 +175,10 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
           </div>
         </div>
 
-        {/* Sample Chips */}
+        {/* Sample Chips (Auto-fill input only) */}
         <div className="mb-3 flex flex-wrap gap-2">
           {SAMPLE_QUERIES.map((sample) => {
+            const isSelected = query.trim() === sample.query.trim();
             const toneClass =
               sample.tone === "unanswerable"
                 ? "border-amber-500/40 bg-amber-500/10 text-amber-200 hover:bg-amber-500/20"
@@ -189,7 +191,9 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
                 type="button"
                 onClick={() => handleSelectSample(sample)}
                 disabled={loading}
-                className={`rounded-full border px-3 py-1 text-xs font-medium transition disabled:opacity-50 ${toneClass}`}
+                className={`cursor-pointer rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 ${toneClass} ${
+                  isSelected ? "ring-1 ring-indigo-400/70" : ""
+                }`}
               >
                 {uiLang === "th" ? sample.labelTh : sample.labelEn}
               </button>
@@ -206,6 +210,12 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
         >
           <div className="relative">
             <textarea
+              ref={textareaRef}
+              aria-label={
+                uiLang === "th"
+                  ? "คำถามสำหรับ Hybrid RAG"
+                  : "Hybrid RAG question input"
+              }
               rows={3}
               maxLength={500}
               value={query}
@@ -217,14 +227,14 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
               }
               className="w-full resize-none rounded-xl border border-slate-700 bg-slate-950/90 p-3.5 text-sm text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
-            <span className="absolute bottom-2.5 right-3 font-mono text-[11px] text-slate-500">
+            <span className="tabular-nums absolute bottom-2.5 right-3 font-mono text-[11px] text-slate-500">
               {query.length}/500
             </span>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-1.5 text-xs text-slate-400">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+              <ShieldCheck className="h-4 w-4 text-emerald-400" aria-hidden="true" />
               <span>
                 {uiLang === "th"
                   ? "ไม่มีการเก็บข้อมูลส่วนบุคคล • บังคับใช้ Rate Limit 15 req/min"
@@ -234,7 +244,7 @@ export function RagWorkspace({ uiLang }: { uiLang: LanguageMode }) {
             <button
               type="submit"
               disabled={loading || query.trim().length === 0}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition-colors hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? (
                 <>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   AlertTriangle,
   CopyCheck,
@@ -51,6 +51,7 @@ export function WorkflowSandbox({
   const [activeRun, setActiveRun] = useState<RunDetailResponse | null>(null);
   const [wasReplayed, setWasReplayed] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const messageRef = useRef<HTMLTextAreaElement | null>(null);
 
   function applyPreset(preset: ScenarioPreset) {
     setSelectedPresetId(preset.id);
@@ -59,6 +60,7 @@ export function WorkflowSandbox({
     setSimulateFailure(preset.simulateActionFailure);
     setIdempotencyKey(generateIdempotencyKey());
     setErrorMsg(null);
+    messageRef.current?.focus();
   }
 
   async function executeRun(keepSameKey: boolean) {
@@ -140,7 +142,7 @@ export function WorkflowSandbox({
                 key={preset.id}
                 type="button"
                 onClick={() => applyPreset(preset)}
-                className={`rounded-xl border p-3.5 text-left transition ${
+                className={`cursor-pointer rounded-xl border p-3.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                   active
                     ? "border-cyan-500/60 bg-cyan-500/10 shadow-sm shadow-cyan-500/10"
                     : "border-slate-800 bg-slate-900/70 hover:border-slate-700 hover:bg-slate-900"
@@ -181,6 +183,7 @@ export function WorkflowSandbox({
                 Customer / Webhook Message (TH or EN)
               </label>
               <textarea
+                ref={messageRef}
                 id="run-message"
                 rows={4}
                 value={message}

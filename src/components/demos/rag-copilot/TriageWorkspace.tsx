@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   AlertCircle,
   CheckCircle2,
@@ -63,6 +63,7 @@ export function TriageWorkspace({ uiLang }: { uiLang: LanguageMode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<TriageTicketResponse | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   async function handleTriage(msg: string, ch: "web_demo" | "line" | "email" | "api") {
     const trimmed = msg.trim();
@@ -124,21 +125,28 @@ export function TriageWorkspace({ uiLang }: { uiLang: LanguageMode }) {
         </div>
 
         <div className="mb-3 flex flex-wrap gap-2">
-          {SAMPLE_TICKETS.map((sample) => (
-            <button
-              key={sample.id}
-              type="button"
-              disabled={loading}
-              onClick={() => {
-                setMessage(sample.message);
-                setChannel(sample.channel);
-                void handleTriage(sample.message, sample.channel);
-              }}
-              className="rounded-full border border-slate-700 bg-slate-800/70 px-3 py-1 text-xs font-medium text-slate-200 transition hover:border-indigo-500/50 hover:bg-slate-800 disabled:opacity-50"
-            >
-              {uiLang === "th" ? sample.labelTh : sample.labelEn}
-            </button>
-          ))}
+          {SAMPLE_TICKETS.map((sample) => {
+            const isSelected = message.trim() === sample.message.trim();
+            return (
+              <button
+                key={sample.id}
+                type="button"
+                disabled={loading}
+                onClick={() => {
+                  setMessage(sample.message);
+                  setChannel(sample.channel);
+                  textareaRef.current?.focus();
+                }}
+                className={`cursor-pointer rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 ${
+                  isSelected
+                    ? "border-indigo-400 bg-indigo-500/15 text-indigo-200"
+                    : "border-slate-700 bg-slate-800/70 text-slate-200 hover:border-indigo-500/50 hover:bg-slate-800"
+                }`}
+              >
+                {uiLang === "th" ? sample.labelTh : sample.labelEn}
+              </button>
+            );
+          })}
         </div>
 
         <form
@@ -150,6 +158,12 @@ export function TriageWorkspace({ uiLang }: { uiLang: LanguageMode }) {
         >
           <div className="relative">
             <textarea
+              ref={textareaRef}
+              aria-label={
+                uiLang === "th"
+                  ? "ข้อความ Ticket สำหรับคัดแยก"
+                  : "Support ticket message input"
+              }
               rows={4}
               maxLength={1500}
               value={message}
@@ -161,7 +175,7 @@ export function TriageWorkspace({ uiLang }: { uiLang: LanguageMode }) {
               }
               className="w-full resize-none rounded-xl border border-slate-700 bg-slate-950/90 p-3.5 text-sm text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
-            <span className="absolute bottom-2.5 right-3 font-mono text-[11px] text-slate-500">
+            <span className="tabular-nums absolute bottom-2.5 right-3 font-mono text-[11px] text-slate-500">
               {message.length}/1500
             </span>
           </div>
@@ -170,7 +184,7 @@ export function TriageWorkspace({ uiLang }: { uiLang: LanguageMode }) {
             <button
               type="submit"
               disabled={loading || message.trim().length < 5}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition-colors hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? (
                 <>

@@ -1,7 +1,7 @@
 # PROGRESS — apec-ai-portfolio
 
 - **Last Updated:** 2026-11-26
-- **Current Phase:** Phase 5b Complete — Live on Vercel Hobby (`https://apec-ai-portfolio.vercel.app/`) & Post-Launch GitHub/Resume/AI OS Sync Done
+- **Current Phase:** Phase 6 Complete — Studio-Grade UX/UI Redesign + Site-Wide Auto-Fill Only Presets
 
 > **Handoff Rule:** Update this file immediately after every completed milestone alongside `git commit`.
 
@@ -20,17 +20,24 @@
   - Live Vercel Hobby deployment (`https://apec-ai-portfolio.vercel.app/`) smoke-tested across `/`, `/chat`, `/demos/rag-copilot`, and `/demos/agent-ops` with `0` console errors, `0` failed requests, `0` direct `*.onrender.com` calls, Light/Dark mode verified, EN (`gemini-3.1-flash-lite`) & TH (`gemini-3.5-flash-lite`) grounded citations verified, and Stage 0 `BLOCKED_INJECTION` verified (`1 ms`, `$0` LLM spend).
   - Raised `/api/chat` `maxOutputTokens` from `700` to `1200` (`src/lib/chat/gemini.ts`) to prevent mid-sentence truncation on long Thai multi-project summaries.
   - Synced live URLs into `enterprise-rag-ops-copilot/README.md`, `production-ai-agent-ops/README.md`, `ApecSinlapachai/README.md`, `resume_apec_ai_automation.html`, and AI OS SSOT (`portfolio_rag_and_sot_architecture.md`, `Triage.md`).
-- [x] **Automated Verification:** `eslint .`, `tsc --noEmit`, `vitest run` (`9/9 passed`), and `next build` (`11/11 routes`) all exit `0`.
+- [x] **Phase 6 — Studio-Grade UX/UI Redesign & Auto-Fill Only Preset Chips:**
+  - Installed global UX/UI skills (`frontend-design`, `web-design-guidelines`, `ui-ux-pro-max`) and applied precision engineering typography (`Space Grotesk`, `Inter`, `IBM Plex Sans Thai`, `JetBrains Mono` via `next/font/google` in `src/app/layout.tsx`) plus `tabular-nums`, `.bg-engineering-grid`, `prefers-reduced-motion`, and refined WCAG AA+ Dark/Light CSS tokens (`src/app/globals.css`).
+  - Redesigned `/` (2-column Editorial Hero + Verified Telemetry Proof Matrix, Quick Copilot Bar, Flagship & Additional cards), `/chat` (`ChatCopilot.tsx`), `/projects/[slug]` (`MarkdownArticle.tsx` `72ch` prose width), and polished `Navbar.tsx`, `ThemeToggle.tsx`, `Footer.tsx`, `/demos/rag-copilot`, and `/demos/agent-ops`.
+  - Prepared clean utility cluster headroom beside `ThemeToggle` in `Navbar.tsx` for a future top-right `EN/TH` language switcher.
+  - Enforced **Auto-Fill Only (no auto-submit)** across all preset/sample chips site-wide (`/`, `/chat`, `/projects/[slug]`, `/demos/rag-copilot` RAG & Triage tabs, `/demos/agent-ops`).
+  - Verified with `npm run verify` (`eslint .`, `tsc --noEmit`, `vitest run` 9/9, `next build` 11/11) and full Browser QA across Desktop (`1440px`), Mobile (`390px`, zero overflow), Dark Mode, and Light Mode (`0` console errors, `0` failed requests, `0` direct `*.onrender.com` calls).
 
 ## In Progress / Next Up
-- Monitor Vercel auto-deploy after `maxOutputTokens: 1200` update and keep `content/projects/` updated via 1-file Markdown additions as new projects ship.
+- Future enhancement (next chat): Implement site-wide `EN/TH` language toggle in `Navbar.tsx` right-hand utility cluster next to `ThemeToggle`.
+- Keep `content/projects/` updated via 1-file Markdown additions as new projects ship.
 
 ## Blockers / Gotchas for Next Agent
 - Keep all browser calls in `/demos/*` routed through `/api/proxy/rag/*` and `/api/proxy/agent/*` (zero direct `*.onrender.com` calls).
+- Keep all starter/sample/preset chips site-wide as **auto-fill only** (focus input without auto-submitting).
 - When `GEMINI_API_KEY` is unset locally, `/api/chat` gracefully runs in `deterministic-grounded-fallback` mode with real citations.
 
 ## Last Verified Commands
 ```bash
-npm run lint && npm run typecheck && npm test && npm run build
+npm run verify
 # Result: eslint 0 errors | tsc 0 errors | vitest 9/9 passed | next build 11/11 routes
 ```
