@@ -54,17 +54,21 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {project.metrics.map((m) => (
-            <div
-              key={m.label}
-              className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3"
-            >
-              <div className="font-mono text-base font-semibold text-[var(--accent)] tabular-nums">
-                {m.value}
+          {project.metrics.map((m) => {
+            const label = lang === "th" && m.labelTh ? m.labelTh : m.label;
+            const value = lang === "th" && m.valueTh ? m.valueTh : m.value;
+            return (
+              <div
+                key={m.label}
+                className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3"
+              >
+                <div className="font-mono text-base font-semibold text-[var(--accent)] tabular-nums">
+                  {value}
+                </div>
+                <div className="mt-0.5 text-xs text-[var(--muted)]">{label}</div>
               </div>
-              <div className="mt-0.5 text-xs text-[var(--muted)]">{m.label}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-[var(--border)] pt-5">

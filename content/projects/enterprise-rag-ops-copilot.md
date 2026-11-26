@@ -4,8 +4,8 @@ title: "Enterprise RAG Ops Copilot"
 shortTitle: "Project #1 · Hybrid RAG Copilot"
 tagline: "Thai–English Hybrid RAG (pgvector + PyThaiNLP + pg_trgm RRF), 3-Stage $0 Guardrails, Pydantic v2 Ticket Triage, and 25-Case Golden Eval Gate."
 summary:
-  en: "Enterprise support and operations teams lose time when chatbots miss exact error codes in bilingual Thai–English SOPs, fabricate answers when evidence is absent, or burn API budget on off-topic and prompt-injection queries. This system combines hybrid exact-code and semantic retrieval with 3-stage anti-hallucination gates that block invalid requests before invoking an LLM. In live production evaluation, it achieved 25/25 (100%) on the Golden Eval suite with 767 ms average latency, 47/47 passing tests, and $0 LLM spend on refused queries."
-  th: "ทีมปฏิบัติการและซัพพอร์ตองค์กรเสียเวลาเมื่อแชตบอตหาโค้ดข้อผิดพลาดในเอกสาร SOP ไทย–อังกฤษไม่เจอ ตอบมั่วเมื่อไม่มีหลักฐาน หรือผลาญงบ API ไปกับคำถามนอกขอบเขตและการโจมตีแบบ Prompt Injection ระบบนี้จึงผสานการค้นหาแบบไฮบริดที่จับคู่ทั้งรหัสเฉพาะและความหมายเข้ากับด่านคัดกรอง 3 ชั้นเพื่อสกัดคำถามที่ไม่ปลอดภัยก่อนเรียกโมเดล ผลทดสอบบนระบบจริงผ่าน Golden Eval 25/25 เคส (100%) ที่ความเร็วเฉลี่ย 767 ms, ผ่าน pytest 47/47 เคส และมีต้นทุน LLM เป็น $0 สำหรับคำถามที่ถูกปฏิเสธ"
+  en: "Built for customer support and operations teams who rely on bilingual Thai–English SOPs and error manuals to resolve issues quickly. Standard AI chatbots often miss exact error codes, guess answers when policies are missing, and waste budget on off-topic or unsafe prompts. This assistant combines exact-code and meaning-based search with strict pre-checks so teams get verified, citation-backed answers—while unsupported or risky requests are blocked before calling an AI model."
+  th: "ออกแบบมาเพื่อช่วยทีมซัพพอร์ตและทีมปฏิบัติการที่ต้องค้นหาคู่มือการทำงาน นโยบาย และรหัสข้อผิดพลาดสองภาษา (ไทย–อังกฤษ) เพื่อตอบลูกค้าให้ทันเวลา แชตบอตทั่วไปมักหารหัสเฉพาะในภาษาไทยไม่เจอ ชอบเดาคำตอบเมื่อไม่มีข้อมูล และสิ้นเปลืองค่า API กับคำถามนอกเรื่องหรือไม่ปลอดภัย ระบบนี้จึงค้นหาทั้งรหัสเฉพาะและความหมายควบคู่กัน พร้อมด่านคัดกรองก่อนเรียก AI เพื่อให้ทีมได้คำตอบที่มีแหล่งอ้างอิงจริงและปลอดภัย"
 status: "live"
 featured: true
 order: 1
@@ -22,13 +22,21 @@ stack:
   - "Next.js 15 + Docker + CI"
 metrics:
   - label: "Live Prod Eval"
+    labelTh: "ผลประเมินระบบจริง"
     value: "25 / 25 (100%)"
+    valueTh: "ผ่าน 25 / 25 (100%)"
   - label: "Pytest Suite"
+    labelTh: "ชุดทดสอบอัตโนมัติ"
     value: "47 / 47 Passed"
+    valueTh: "ผ่าน 47 / 47 เคส"
   - label: "Avg Live Latency"
+    labelTh: "ความเร็วตอบเฉลี่ย"
     value: "767 ms"
+    valueTh: "767 มิลลิวินาที"
   - label: "Refusal Spend"
+    labelTh: "ต้นทุนคำถามที่ปฏิเสธ"
     value: "$0 LLM Cost"
+    valueTh: "$0 (ไม่เรียก AI)"
 starterPrompts:
   - "How does Enterprise RAG Ops Copilot prevent hallucinations at $0 guardrail cost?"
   - "Explain the Thai-English Hybrid RRF retrieval pipeline in Project #1"

@@ -4,8 +4,8 @@ title: "Future Project Title"
 shortTitle: "Project #3 · Short Label"
 tagline: "One-sentence summary of the business problem, production stack, and verified metric."
 summary:
-  en: "Problem-first 2–3 sentence English summary explaining what operational bottleneck this project solves, how it solves it without listing only stack buzzwords, and its verified impact or metrics."
-  th: "สรุปภาษาไทยแบบ Problem-First 2–3 ประโยค อธิบายว่าโปรเจกต์นี้แก้ปัญหาอะไรในการทำงานจริง แก้ด้วยกลไกหลักอย่างไร และสร้างผลลัพธ์หรือตัวเลขที่วัดผลได้จริงเท่าไร"
+  en: "Built for [target team or users] who struggle with [real-world operational problem]. Existing tools or manual workflows fall short because [root cause]. This system solves it by [plain-language mechanism and business value], leaving detailed numbers to the metric cards below."
+  th: "ออกแบบมาเพื่อช่วย[กลุ่มผู้ใช้งาน]ที่พบปัญหา[ปัญหาในการทำงานจริง] วิธีเดิมมักไม่ตอบโจทย์เพราะ[สาเหตุหลักของปัญหา] ระบบนี้จึงเข้ามาแก้ปัญหาด้วย[กลไกหลักและคุณค่าที่จับต้องได้แบบเข้าใจง่าย] โดยไม่ต้องใส่ตัวเลขซ้ำกับกล่องตัวเลขด้านล่าง"
 status: "planned"
 featured: false
 order: 99
@@ -17,7 +17,9 @@ stack:
   - "PostgreSQL"
 metrics:
   - label: "Key Metric"
+    labelTh: "ตัวชี้วัดหลัก" # Optional Thai label shown when language toggle is TH
     value: "100%"
+    valueTh: "100%" # Optional Thai value shown when language toggle is TH
 starterPrompts:
   - "How does Future Project Title work?"
 ---

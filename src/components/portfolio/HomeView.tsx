@@ -209,19 +209,23 @@ export default function HomeView({ profile, projects }: HomeViewProps) {
 
                 {/* Verified Metrics Matrix */}
                 <div className="mt-5 grid grid-cols-2 gap-2.5">
-                  {project.metrics.map((m) => (
-                    <div
-                      key={m.label}
-                      className="rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2.5"
-                    >
-                      <div className="font-mono text-sm font-semibold text-[var(--foreground)] tabular-nums">
-                        {m.value}
+                  {project.metrics.map((m) => {
+                    const label = lang === "th" && m.labelTh ? m.labelTh : m.label;
+                    const value = lang === "th" && m.valueTh ? m.valueTh : m.value;
+                    return (
+                      <div
+                        key={m.label}
+                        className="rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2.5"
+                      >
+                        <div className="font-mono text-sm font-semibold text-[var(--foreground)] tabular-nums">
+                          {value}
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-[var(--muted)]">
+                          {label}
+                        </div>
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--muted)]">
-                        {m.label}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* Stack Tags */}
@@ -296,14 +300,19 @@ export default function HomeView({ profile, projects }: HomeViewProps) {
                     {project.category}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
-                    {project.metrics.slice(0, 2).map((m) => (
-                      <span
-                        key={m.label}
-                        className="rounded-md border border-[var(--border)] bg-[var(--background)] px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--accent-emerald)] tabular-nums"
-                      >
-                        {m.value}
-                      </span>
-                    ))}
+                    {project.metrics.slice(0, 2).map((m) => {
+                      const label = lang === "th" && m.labelTh ? m.labelTh : m.label;
+                      const value = lang === "th" && m.valueTh ? m.valueTh : m.value;
+                      return (
+                        <span
+                          key={m.label}
+                          title={label}
+                          className="rounded-md border border-[var(--border)] bg-[var(--background)] px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--accent-emerald)] tabular-nums"
+                        >
+                          {value}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
                 <h3 className="mt-2.5 text-lg font-bold text-[var(--foreground)]">
