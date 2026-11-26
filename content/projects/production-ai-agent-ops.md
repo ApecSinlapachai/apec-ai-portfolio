@@ -4,8 +4,8 @@ title: "Production AI Agent Ops"
 shortTitle: "Project #2 · Stateful AI Agent"
 tagline: "SQL-First LangGraph State Machine with Pre-LLM PDPA PII Redaction, FOR UPDATE HITL Approval Gates, Idempotency + Retry/DLQ, n8n Integration, and 62.78% LLM Cost Reduction."
 summary:
-  en: "Enterprise AI agents fail in production when they leak customer PII to external LLMs, trigger duplicate refunds on retried webhooks, or send simple tasks to expensive frontier models. This stateful agent masks sensitive data before LLM and database writes, pauses high-risk actions for locked human approval, and routes routine work to lightweight models. Across 24 TH/EN benchmark cases, it achieved a 0.00 PDPA leak rate (32/32 entities masked), 1.00 HITL enforcement, 62.78% LLM cost reduction, and 40/40 passing tests."
-  th: "AI Agent ทั่วไปมักใช้งานจริงไม่ได้เพราะเสี่ยงทำข้อมูลส่วนบุคคล (PDPA) รั่วไหลไปยัง API ภายนอก สั่งคืนเงินซ้ำเมื่อ Webhook ส่งมาซ้ำ หรือส่งงานง่าย ๆ ไปยังโมเดลราคาแพง ระบบ Agent แบบควบคุมสถานะนี้จะปิดบังข้อมูล PII ก่อนส่งเข้าโมเดลและฐานข้อมูล หยุดรอการอนุมัติจากมนุษย์แบบล็อกแถวข้อมูลสำหรับคำสั่งเสี่ยงสูง และแยกงานง่ายไปใช้โมเดลต้นทุนต่ำ ผลทดสอบ 24 เคสไทย–อังกฤษทำอัตราข้อมูลรั่วไหล 0.00 (ปิดบังครบ 32/32 จุด), บังคับใช้ HITL 100%, ลดต้นทุน LLM ลง 62.78% และผ่านการทดสอบ pytest 40/40 เคส"
+  en: "Built for operations and customer service teams automating sensitive workflows such as refunds, escalations, and account requests. Typical AI agents are risky in production because they can expose customer personal data to external AI APIs, trigger duplicate actions, or overuse expensive models on simple tasks. This system masks sensitive data before any AI call, pauses high-risk actions for human sign-off, and routes routine work to lightweight models so teams stay compliant and cost-efficient."
+  th: "สร้างขึ้นเพื่อช่วยทีมปฏิบัติการและทีมบริการลูกค้าในการทำระบบอัตโนมัติสำหรับงานละเอียดอ่อน เช่น การคืนเงิน การส่งต่อเคส และคำขอจัดการบัญชี AI Agent ทั่วไปมักนำไปใช้จริงไม่ได้เพราะเสี่ยงส่งข้อมูลส่วนบุคคล (PDPA) ออกไปยังภายนอก ทำงานซ้ำเมื่อได้รับคำสั่งซ้ำ หรือใช้โมเดลราคาแพงกับงานพื้นฐาน ระบบนี้จึงปิดบังข้อมูลส่วนบุคคลก่อนส่งเข้า AI หยุดรอคนอนุมัติในคำสั่งเสี่ยงสูง และเลือกใช้โมเดลขนาดเล็กกับงานทั่วไปเพื่อให้ปลอดภัยและประหยัดต้นทุน"
 status: "live"
 featured: true
 order: 2
@@ -22,13 +22,21 @@ stack:
   - "Gemini 3.x Cost Routing"
 metrics:
   - label: "LLM Cost Cut"
+    labelTh: "ลดต้นทุนค่า AI"
     value: "62.78% Saved"
+    valueTh: "ประหยัดลง 62.78%"
   - label: "PDPA Leak Rate"
+    labelTh: "อัตราข้อมูลส่วนบุคคลรั่วไหล"
     value: "0.00 (32/32)"
+    valueTh: "0.00 (ปิดบังครบ 32/32)"
   - label: "HITL Enforcement"
+    labelTh: "การบังคับรอคนอนุมัติ"
     value: "1.00 (100%)"
+    valueTh: "1.00 (ครบ 100%)"
   - label: "Pytest Suite"
+    labelTh: "ชุดทดสอบอัตโนมัติ"
     value: "40 / 40 Passed"
+    valueTh: "ผ่าน 40 / 40 เคส"
 starterPrompts:
   - "How does Production AI Agent Ops achieve 0.00 PDPA leak rate and 62.78% cost reduction?"
   - "Compare Project #1 (RAG Copilot) vs Project #2 (Agent Ops) architecture"

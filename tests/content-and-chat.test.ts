@@ -35,6 +35,29 @@ describe("File-Driven Markdown SOT (Layer 1 & 2 Contract)", () => {
     for (const project of projects) {
       expect(project.summary.en.trim().length).toBeGreaterThan(0);
       expect(project.summary.th.trim().length).toBeGreaterThan(0);
+      for (const metric of project.metrics) {
+        expect(metric.labelTh?.trim().length).toBeGreaterThan(0);
+        expect(metric.valueTh?.trim().length).toBeGreaterThan(0);
+      }
+    }
+
+    const redundantBenchmarks = [
+      "25/25",
+      "767 ms",
+      "47/47",
+      "62.78%",
+      "40/40",
+      "32/32",
+      "85/85",
+      "$0",
+    ];
+    for (const flagshipSlug of ["enterprise-rag-ops-copilot", "production-ai-agent-ops"]) {
+      const flagship = projects.find((p) => p.slug === flagshipSlug);
+      expect(flagship).toBeDefined();
+      for (const token of redundantBenchmarks) {
+        expect(flagship!.summary.en).not.toContain(token);
+        expect(flagship!.summary.th).not.toContain(token);
+      }
     }
   });
 

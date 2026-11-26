@@ -2,7 +2,9 @@ import { z } from "zod";
 
 export const MetricSchema = z.object({
   label: z.string().min(1),
+  labelTh: z.string().min(1).optional(),
   value: z.string().min(1),
+  valueTh: z.string().min(1).optional(),
 });
 
 export const LocalizedTextSchema = z.object({
