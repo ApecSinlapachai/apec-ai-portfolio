@@ -168,7 +168,7 @@ export default function AgentOpsDemoPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100">
+    <div className="demo-theme-scope min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <DemoTopBar
         projectSlug="production-ai-agent-ops"
         title="Project #2 · Production AI Agent Ops"

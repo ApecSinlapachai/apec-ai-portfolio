@@ -84,7 +84,7 @@ export default function RagCopilotDemoPage() {
   }, [startHealthCheck]);
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100">
+    <div className="demo-theme-scope min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <DemoTopBar
         projectSlug="enterprise-rag-ops-copilot"
         title="Project #1 · Enterprise RAG Ops Copilot"
@@ -93,7 +93,7 @@ export default function RagCopilotDemoPage() {
       />
 
       {/* Demo Header & Tabs */}
-      <div className="border-b border-slate-800/80 bg-[#090d16]/90">
+      <div className="border-b border-slate-800/80 bg-[var(--background)]/90">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/20 ring-1 ring-indigo-500/40">
