@@ -148,7 +148,7 @@ export default function RagCopilotDemoPage() {
               className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-semibold text-slate-200 transition-colors hover:border-indigo-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             >
               <Languages className="h-3.5 w-3.5 text-indigo-400" aria-hidden="true" />
-              <span>{uiLang === "en" ? "EN / ไทย" : "ไทย / EN"}</span>
+              <span>{uiLang === "en" ? "EN / TH" : "TH / EN"}</span>
             </button>
           </div>
         </div>

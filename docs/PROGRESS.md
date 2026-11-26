@@ -1,7 +1,7 @@
 # PROGRESS — apec-ai-portfolio
 
 - **Last Updated:** 2026-11-26
-- **Current Phase:** Phase 7 Complete — Site-Wide EN/TH Switcher, Problem-First Summaries & Custom Microchip Favicon/Logo
+- **Current Phase:** Phase 8 Complete — HR-Friendly Summaries, Localized Thai Metrics, Red Maple Leaf Brand, Demo Explainers & Social Open Graph SEO
 
 > **Handoff Rule:** Update this file immediately after every completed milestone alongside `git commit`.
 
@@ -32,15 +32,15 @@
   - **Track C (Pages, Copilot & Live Demos i18n Sync):** Extracted client views `HomeView.tsx` and `ProjectDetailView.tsx` while keeping `src/app/page.tsx` and `src/app/projects/[slug]/page.tsx` as SSG Server Components; surfaced `project.summary[lang]` prominently on project cards and case studies; translated `ChatCopilot.tsx` (preserving Auto-Fill Only on all presets/chips); synced `/demos/rag-copilot` `uiLang` directly with `useLanguage()`; and translated `/demos/agent-ops` header, subtitle, health badges, and tabs.
   - **Track D (Verification & Browser QA):** Verified with `npm run verify` (`eslint` 0 errors, `tsc` 0 errors, `vitest` 9/9 passed, `next build` 12/12 routes incl. `/icon.svg`) and full local Browser QA (`http://localhost:3005`) across EN/TH persistence on reload, Dark/Light mode, Desktop `1440px`, Mobile `390px` (zero horizontal overflow in both EN & TH), `/icon.svg` HTTP 200 + brand SVG mark, Auto-Fill Only verified (`0` auto-submitted `/api/chat` requests), `0` console/hydration errors, and `0` direct `*.onrender.com` calls.
 
-## In Progress / Next Up (Phase 8 Backlog — Noted, Not Implemented Yet)
-1. **HR-Friendly Project Summaries & Localized Metric Boxes:**
-   - Rewrite both flagship project summaries (`enterprise-rag-ops-copilot` and `production-ai-agent-ops`) so general HR / non-technical readers immediately understand: *Who does this help? What real problem caused it? Why does this system exist?* (keep card summaries concise, then expand in detail on each Demo page — see item #3).
-   - Remove redundant benchmark strings from the summary paragraph (e.g., `"ผลทดสอบบนระบบจริงผ่าน Golden Eval 25/25 เคส (100%) ที่ความเร็วเฉลี่ย 767 ms, ผ่าน pytest 47/47 เคส และมีต้นทุน LLM เป็น $0 สำหรับคำถามที่ถูกปฏิเสธ"`) because those metrics are already displayed in the metric boxes below.
-   - Localize the metric box labels/values into Thai when `lang === "th"`.
-2. **Language Toggle Label:** Change the switcher button text from `EN/ไทย` to `EN/TH`.
-3. **Demo Page Project Explanations:** Add a clear, expanded project explanation section inside each Demo page (`/demos/rag-copilot` and `/demos/agent-ops`), taking advantage of the extra space to explain the system in plain, accessible language for general audiences.
-4. **Red Maple Leaf Brand Logo:** Replace both the browser tab favicon (`src/app/icon.svg`) and the Navbar brand logo (`BrandMicrochipMark` in `Navbar.tsx`) with a custom red maple leaf icon.
-5. **Post-Deploy & Ongoing:** Keep `content/projects/` updated via 1-file Markdown additions as new projects ship, and run post-deploy smoke checks on `https://apec-ai-portfolio.vercel.app/` after pushing changes.
+- [x] **Phase 8 — HR-Friendly Summaries, Localized Thai Metrics, Red Maple Leaf Brand, Demo Explainers & Social Open Graph SEO (Swarm: 1 Neon Medium Coordinator + 3 Hydrogen High Workers):**
+  - **Track 1 (`content-metrics`):** Extended `MetricSchema` (`src/lib/content/schema.ts`) with optional `labelTh` & `valueTh`; rewrote EN/TH `summary` across all 3 projects (`enterprise-rag-ops-copilot`, `production-ai-agent-ops`, `fast-lead-automation`) + `_TEMPLATE_project.md` into plain-language HR-friendly 2–3 sentence explanations without redundant benchmark numbers; localized metric boxes in `HomeView.tsx` & `ProjectDetailView.tsx`; added Vitest assertions in `tests/content-and-chat.test.ts`.
+  - **Track 2 (`brand-og-seo`):** Updated language switcher label from `EN / ไทย` to `EN / TH` (`LanguageToggle.tsx` + `/demos/rag-copilot` secondary toggle); replaced microchip mark with custom Red Maple Leaf SVG favicon (`src/app/icon.svg`) & `BrandMapleMark` (`Navbar.tsx`); added `metadataBase`, `openGraph`, and `twitter` (`summary_large_image`) to `src/app/layout.tsx`, static `1200×630` `src/app/opengraph-image.tsx`, and route-level metadata layouts (`src/app/demos/{rag-copilot,agent-ops}/layout.tsx`).
+  - **Track 3 (`demo-explainers`):** Added bilingual plain-language `explainer` content (`src/lib/i18n/translations.ts`) and collapsible 3-pillar `DemoProjectExplainer` (`src/components/demos/DemoProjectExplainer.tsx`, Dark/Light semantic tokens, `aria-expanded`) mounted on `/demos/rag-copilot` and `/demos/agent-ops` while preserving `/api/proxy/*` and Auto-Fill Only chips.
+  - **Verification & Browser QA:** Verified with `npm run verify` (`eslint` 0 errors, `tsc` 0 errors, `vitest` 9/9 passed, `next build` 13/13 routes incl. `/icon.svg` and `/opengraph-image`) and full local Browser QA (`http://localhost:3006`) across EN/TH, Dark/Light, Desktop `1440px`, Mobile `390px` (`0` console errors, `0` hydration errors, `0` horizontal overflow, `0` direct `*.onrender.com` calls).
+
+## In Progress / Next Up (Post-Deploy & Ongoing)
+1. **Deploy & Refresh Social Previews:** Push `main` to GitHub (triggers Vercel Hobby deployment), then run [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) on `/`, `/demos/rag-copilot`, and `/demos/agent-ops` to clear LinkedIn's cached blank preview.
+2. **Ongoing:** Keep `content/projects/` updated via 1-file Markdown additions as new projects ship, and run post-deploy smoke checks on `https://apec-ai-portfolio.vercel.app/` after pushing changes.
 
 ## Blockers / Gotchas for Next Agent
 - Keep all browser calls in `/demos/*` routed through `/api/proxy/rag/*` and `/api/proxy/agent/*` (zero direct `*.onrender.com` calls).
@@ -50,5 +50,5 @@
 ## Last Verified Commands
 ```bash
 npm run verify
-# Result: eslint 0 errors | tsc 0 errors | vitest 9/9 passed | next build 12/12 routes (incl. /icon.svg)
+# Result: eslint 0 errors | tsc 0 errors | vitest 9/9 passed | next build 13/13 routes (incl. /icon.svg & /opengraph-image)
 ```
