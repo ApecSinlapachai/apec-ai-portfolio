@@ -39,10 +39,28 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const SITE_URL = "https://apec-ai-portfolio.vercel.app";
+const SITE_TITLE = "Apec Sinlapachai | AI & AI Automation Engineer Portfolio";
+const SITE_DESCRIPTION =
+  "Unified AI Engineering Portfolio featuring live Enterprise Hybrid RAG Copilot, Production LangGraph AI Agent Ops, verified eval benchmarks, and a Zero-Cold-Start AI Copilot.";
+
 export const metadata: Metadata = {
-  title: "Apec Sinlapachai | AI & AI Automation Engineer Portfolio",
-  description:
-    "Unified AI Engineering Portfolio featuring live Enterprise Hybrid RAG Copilot, Production LangGraph AI Agent Ops, verified eval benchmarks, and a Zero-Cold-Start AI Copilot.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Apec Sinlapachai — AI & AI Automation Engineer",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 const THEME_INIT_SCRIPT = `

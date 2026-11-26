@@ -35,7 +35,7 @@ export default function LanguageToggle() {
             : "text-[var(--muted)]"
         }
       >
-        ไทย
+        TH
       </span>
     </button>
   );
