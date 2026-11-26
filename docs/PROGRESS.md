@@ -1,7 +1,7 @@
 # PROGRESS — apec-ai-portfolio
 
 - **Last Updated:** 2026-11-26
-- **Current Phase:** Phase 6 Complete — Studio-Grade UX/UI Redesign + Site-Wide Auto-Fill Only Presets
+- **Current Phase:** Phase 7 Complete — Site-Wide EN/TH Switcher, Problem-First Summaries & Custom Microchip Favicon/Logo
 
 > **Handoff Rule:** Update this file immediately after every completed milestone alongside `git commit`.
 
@@ -26,14 +26,15 @@
   - Prepared clean utility cluster headroom beside `ThemeToggle` in `Navbar.tsx` for a future top-right `EN/TH` language switcher.
   - Enforced **Auto-Fill Only (no auto-submit)** across all preset/sample chips site-wide (`/`, `/chat`, `/projects/[slug]`, `/demos/rag-copilot` RAG & Triage tabs, `/demos/agent-ops`).
   - Verified with `npm run verify` (`eslint .`, `tsc --noEmit`, `vitest run` 9/9, `next build` 11/11) and full Browser QA across Desktop (`1440px`), Mobile (`390px`, zero overflow), Dark Mode, and Light Mode (`0` console errors, `0` failed requests, `0` direct `*.onrender.com` calls), committed as `9441a3e`.
+- [x] **Phase 7 — Site-Wide `EN / TH` Switcher, Problem-First Summaries & Custom Microchip Favicon/Logo:**
+  - **Track A (Content & Schema SSOT):** Extended `ProjectFrontmatterSchema` (`src/lib/content/schema.ts`) with `summary: { en, th }` (`LocalizedTextSchema`) and `ProfileFrontmatterSchema` with optional `headlineTh` / `locationTh`; authored Problem-First 2–3 sentence EN/TH summaries across all 3 projects + `_TEMPLATE_project.md`, updated `content/profile.md`, included both summaries in `getKnowledgeChunks()` (`src/lib/content/loader.ts`), and added Vitest schema/chunk assertions (`tests/content-and-chat.test.ts`).
+  - **Track B (Site-Wide i18n Shell & Brand Identity):** Added `src/lib/i18n/{LanguageContext,translations}.ts` (`localStorage` key `apec-portfolio-lang`, hydration-safe `"en"` SSR default + inline `<head>` `LANG_INIT_SCRIPT` in `src/app/layout.tsx`), compact `LanguageToggle` (`EN / ไทย`) beside `ThemeToggle` in `Navbar.tsx`, custom geometric microchip SVG favicon (`src/app/icon.svg`) + matching `BrandMicrochipMark` in `Navbar.tsx`, and translated `Navbar`, `DemoTopBar`, and `Footer`.
+  - **Track C (Pages, Copilot & Live Demos i18n Sync):** Extracted client views `HomeView.tsx` and `ProjectDetailView.tsx` while keeping `src/app/page.tsx` and `src/app/projects/[slug]/page.tsx` as SSG Server Components; surfaced `project.summary[lang]` prominently on project cards and case studies; translated `ChatCopilot.tsx` (preserving Auto-Fill Only on all presets/chips); synced `/demos/rag-copilot` `uiLang` directly with `useLanguage()`; and translated `/demos/agent-ops` header, subtitle, health badges, and tabs.
+  - **Track D (Verification & Browser QA):** Verified with `npm run verify` (`eslint` 0 errors, `tsc` 0 errors, `vitest` 9/9 passed, `next build` 12/12 routes incl. `/icon.svg`) and full local Browser QA (`http://localhost:3005`) across EN/TH persistence on reload, Dark/Light mode, Desktop `1440px`, Mobile `390px` (zero horizontal overflow in both EN & TH), `/icon.svg` HTTP 200 + brand SVG mark, Auto-Fill Only verified (`0` auto-submitted `/api/chat` requests), `0` console/hydration errors, and `0` direct `*.onrender.com` calls.
 
-## In Progress / Next Up (Phase 7)
-1. **Site-Wide `EN / TH` Language Switcher:**
-   - Add a compact `EN/TH` toggle button in the top-right utility cluster of `src/components/layout/Navbar.tsx` (beside `ThemeToggle`), persisted via `localStorage` without hydration flash.
-   - Translate UI shell (`Navbar`, `Footer`), Home Showcase (`/`), Case Study chrome (`/projects/[slug]`), `/chat` chrome, and sync cleanly with `/demos/rag-copilot` & `/demos/agent-ops`.
-2. **Human-Readable Project Problem & Solution Summaries (2–3 lines per card):**
-   - Extend `ProjectFrontmatterSchema` (`src/lib/content/schema.ts`) and `content/projects/*.md` (including `_TEMPLATE_project.md`) to include concise, plain-language EN & TH summaries explaining **what problem each project solves and what business/operational impact it delivers** — rather than listing only tech-stack buzzwords on the `/` project cards.
-3. Keep `content/projects/` updated via 1-file Markdown additions as new projects ship.
+## In Progress / Next Up
+1. Keep `content/projects/` updated via 1-file Markdown additions as new projects ship (each conforming to `ProjectFrontmatterSchema` including `summary: { en, th }`).
+2. Post-deploy Vercel smoke check on `https://apec-ai-portfolio.vercel.app/` after push.
 
 ## Blockers / Gotchas for Next Agent
 - Keep all browser calls in `/demos/*` routed through `/api/proxy/rag/*` and `/api/proxy/agent/*` (zero direct `*.onrender.com` calls).
@@ -43,5 +44,5 @@
 ## Last Verified Commands
 ```bash
 npm run verify
-# Result: eslint 0 errors | tsc 0 errors | vitest 9/9 passed | next build 11/11 routes
+# Result: eslint 0 errors | tsc 0 errors | vitest 9/9 passed | next build 12/12 routes (incl. /icon.svg)
 ```
