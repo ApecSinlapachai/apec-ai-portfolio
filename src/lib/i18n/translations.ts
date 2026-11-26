@@ -96,8 +96,24 @@ export interface TranslationDictionary {
     inputLabel: string;
     inputPlaceholder: string;
     sendButton: string;
+    clearButton: string;
     networkError: string;
     requestFailedPrefix: string;
+  };
+  ragCopilot: {
+    topBarTitle: string;
+    topBarDefaultQuestion: string;
+    headerTitle: string;
+    headerSubtitle: string;
+    proxyTitlePrefix: string;
+    apiReadyPrefix: string;
+    apiWarming: string;
+    apiOffline: string;
+    tabs: {
+      rag: string;
+      triage: string;
+      eval: string;
+    };
   };
   agentOps: {
     topBarTitle: string;
@@ -105,6 +121,11 @@ export interface TranslationDictionary {
     headerTitle: string;
     headerSubtitle: string;
     endpointLabel: string;
+    waitingApiPrefix: string;
+    retryLabel: string;
+    offlineApiPrefix: string;
+    offlineRetriesSuffix: string;
+    benchmarkLoadError: string;
     tabs: {
       sandbox: string;
       approvals: string;
@@ -274,9 +295,27 @@ export const translations: Record<Lang, TranslationDictionary> = {
       inputPlaceholder:
         "Ask in English or Thai (e.g. Compare Project #1 vs #2)…",
       sendButton: "Send",
+      clearButton: "Clear",
       networkError:
         "Network error while calling /api/chat. Check your connection and try again.",
       requestFailedPrefix: "Request failed",
+    },
+    ragCopilot: {
+      topBarTitle: "Project #1 · Enterprise RAG Ops Copilot",
+      topBarDefaultQuestion:
+        "How does Enterprise RAG Ops Copilot prevent hallucinations at $0 guardrail cost and achieve 25/25 live eval?",
+      headerTitle: "Enterprise RAG Ops Copilot",
+      headerSubtitle:
+        "Thai–English Hybrid RAG • Pydantic v2 Ticket Triage • 25-Case Eval Gate",
+      proxyTitlePrefix: "API proxied via",
+      apiReadyPrefix: "API Ready",
+      apiWarming: "Warming API…",
+      apiOffline: "API Offline / Cold",
+      tabs: {
+        rag: "Hybrid RAG Copilot",
+        triage: "Ticket Triage",
+        eval: "Eval Scorecard & Corpus",
+      },
     },
     agentOps: {
       topBarTitle: "Project #2 · Production AI Agent Ops",
@@ -286,6 +325,11 @@ export const translations: Record<Lang, TranslationDictionary> = {
       headerSubtitle:
         "No-Login Live Control Plane • LangGraph State Machine • PDPA Redaction • HITL • Idempotent Retry + DLQ",
       endpointLabel: "endpoint",
+      waitingApiPrefix: "Waiting for API via",
+      retryLabel: "retry",
+      offlineApiPrefix: "Could not connect to API via",
+      offlineRetriesSuffix: "retries",
+      benchmarkLoadError: "Failed to load benchmark scorecard.",
       tabs: {
         sandbox: "Workflow Sandbox",
         approvals: "HITL Approvals",
@@ -450,9 +494,27 @@ export const translations: Record<Lang, TranslationDictionary> = {
       inputPlaceholder:
         "พิมพ์คำถามภาษาไทยหรืออังกฤษ (เช่น เปรียบเทียบโปรเจกต์ #1 กับ #2)…",
       sendButton: "ส่ง",
+      clearButton: "ล้างแชต",
       networkError:
         "เกิดข้อผิดพลาดเครือข่ายขณะเรียก /api/chat โปรดตรวจสอบการเชื่อมต่อแล้วลองใหม่",
       requestFailedPrefix: "คำขอไม่สำเร็จ",
+    },
+    ragCopilot: {
+      topBarTitle: "โปรเจกต์ #1 · Enterprise RAG Ops Copilot",
+      topBarDefaultQuestion:
+        "Enterprise RAG Ops Copilot ป้องกัน Hallucination ด้วย Guardrail ต้นทุน $0 และทำผลประเมินสด 25/25 ได้อย่างไร?",
+      headerTitle: "Enterprise RAG Ops Copilot",
+      headerSubtitle:
+        "ระบบ Hybrid RAG ไทย–อังกฤษ • คัดแยก Ticket ด้วย Pydantic v2 • เกณฑ์ประเมิน 25 เคส",
+      proxyTitlePrefix: "เชื่อมต่อ API ผ่านพร็อกซี",
+      apiReadyPrefix: "API พร้อมใช้งาน",
+      apiWarming: "กำลังปลุก API…",
+      apiOffline: "API ออฟไลน์ / กำลังเริ่ม",
+      tabs: {
+        rag: "ถาม-ตอบ Hybrid RAG",
+        triage: "คัดแยก Ticket Triage",
+        eval: "ผล Eval Scorecard และคลังเอกสาร",
+      },
     },
     agentOps: {
       topBarTitle: "โปรเจกต์ #2 · Production AI Agent Ops",
@@ -462,6 +524,11 @@ export const translations: Record<Lang, TranslationDictionary> = {
       headerSubtitle:
         "Control Plane ใช้งานจริงไม่ต้องล็อกอิน • LangGraph State Machine • ปกปิด PDPA • อนุมัติ HITL • Retry แบบ Idempotent + DLQ",
       endpointLabel: "endpoint",
+      waitingApiPrefix: "กำลังรอการตอบกลับจาก API ผ่าน",
+      retryLabel: "ลองใหม่ครั้งที่",
+      offlineApiPrefix: "ไม่สามารถเชื่อมต่อ API ผ่าน",
+      offlineRetriesSuffix: "ครั้ง",
+      benchmarkLoadError: "ไม่สามารถโหลดตารางคะแนน Benchmark ได้",
       tabs: {
         sandbox: "ทดสอบเวิร์กโฟลว์",
         approvals: "คิวอนุมัติ HITL",

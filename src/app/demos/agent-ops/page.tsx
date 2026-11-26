@@ -29,18 +29,28 @@ import { BenchmarkScorecard } from "@/components/demos/agent-ops/BenchmarkScorec
 import { DlqPanel } from "@/components/demos/agent-ops/DlqPanel";
 import { HealthBanner } from "@/components/demos/agent-ops/HealthBanner";
 import { WorkflowSandbox } from "@/components/demos/agent-ops/WorkflowSandbox";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { translations } from "@/lib/i18n/translations";
 
 type TabId = "sandbox" | "approvals" | "dlq" | "benchmark";
+
+type HealthErrorState =
+  | { type: "retrying"; attempt: number }
+  | { type: "offline" }
+  | null;
 
 const HEALTH_RETRY_INTERVAL_MS = 5000;
 const HEALTH_MAX_RETRIES = 10;
 
 export default function AgentOpsDemoPage() {
+  const { lang } = useLanguage();
+  const t = translations[lang].agentOps;
+
   const [activeTab, setActiveTab] = useState<TabId>("sandbox");
 
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [healthLoading, setHealthLoading] = useState(true);
-  const [healthError, setHealthError] = useState<string | null>(null);
+  const [healthErrorState, setHealthErrorState] = useState<HealthErrorState>(null);
   const [wakingUp, setWakingUp] = useState(false);
 
   const [runs, setRuns] = useState<RunResponse[]>([]);
@@ -75,10 +85,10 @@ export default function AgentOpsDemoPage() {
       setBenchmarkError(null);
     } catch (err) {
       setBenchmarkError(
-        err instanceof Error ? err.message : "Failed to load benchmark scorecard."
+        err instanceof Error ? err.message : t.benchmarkLoadError
       );
     }
-  }, []);
+  }, [t.benchmarkLoadError]);
 
   const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const mountedRef = useRef(true);
@@ -95,14 +105,14 @@ export default function AgentOpsDemoPage() {
       clearRetryTimer();
       setHealthLoading(true);
       if (attempt === 0) {
-        setHealthError(null);
+        setHealthErrorState(null);
       }
       try {
         const res = await fetchHealth();
         if (!mountedRef.current) return;
         setHealth(res);
         setWakingUp(false);
-        setHealthError(null);
+        setHealthErrorState(null);
         setHealthLoading(false);
         await Promise.all([loadOperationalData(), loadBenchmark()]);
       } catch {
@@ -111,18 +121,14 @@ export default function AgentOpsDemoPage() {
         if (attempt < HEALTH_MAX_RETRIES) {
           const nextAttempt = attempt + 1;
           setWakingUp(true);
-          setHealthError(
-            `Waiting for API via ${API_PROXY_PREFIX} (retry ${nextAttempt}/${HEALTH_MAX_RETRIES})...`
-          );
+          setHealthErrorState({ type: "retrying", attempt: nextAttempt });
           setHealthLoading(false);
           retryTimerRef.current = setTimeout(() => {
             void checkHealth(nextAttempt);
           }, HEALTH_RETRY_INTERVAL_MS);
         } else {
           setWakingUp(false);
-          setHealthError(
-            `Could not connect to API via ${API_PROXY_PREFIX} after ${HEALTH_MAX_RETRIES} retries.`
-          );
+          setHealthErrorState({ type: "offline" });
           setHealthLoading(false);
         }
       }
@@ -139,6 +145,13 @@ export default function AgentOpsDemoPage() {
     };
   }, [checkHealth, clearRetryTimer]);
 
+  const healthError =
+    healthErrorState?.type === "retrying"
+      ? `${t.waitingApiPrefix} ${API_PROXY_PREFIX} (${t.retryLabel} ${healthErrorState.attempt}/${HEALTH_MAX_RETRIES})...`
+      : healthErrorState?.type === "offline"
+        ? `${t.offlineApiPrefix} ${API_PROXY_PREFIX} (${HEALTH_MAX_RETRIES} ${t.offlineRetriesSuffix}).`
+        : null;
+
   const pendingApprovalsCount = approvals.filter((a) => a.status === "PENDING").length;
   const openDlqCount = dlqJobs.filter((j) => j.status === "OPEN").length;
 
@@ -149,52 +162,49 @@ export default function AgentOpsDemoPage() {
     badge?: number;
     badgeColor?: string;
   }[] = [
-    { id: "sandbox", label: "Workflow Sandbox", icon: Workflow },
+    { id: "sandbox", label: t.tabs.sandbox, icon: Workflow },
     {
       id: "approvals",
-      label: "HITL Approvals",
+      label: t.tabs.approvals,
       icon: ShieldAlert,
       badge: pendingApprovalsCount,
       badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/40",
     },
     {
       id: "dlq",
-      label: "Dead-Letter Queue",
+      label: t.tabs.dlq,
       icon: AlertOctagon,
       badge: openDlqCount,
       badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/40",
     },
-    { id: "benchmark", label: "Cost Benchmark", icon: BarChart3 },
+    { id: "benchmark", label: t.tabs.benchmark, icon: BarChart3 },
   ];
 
   return (
     <div className="demo-theme-scope min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <DemoTopBar
         projectSlug="production-ai-agent-ops"
-        title="Project #2 · Production AI Agent Ops"
+        title={t.topBarTitle}
         repoUrl="https://github.com/ApecSinlapachai/production-ai-agent-ops"
-        defaultQuestion="How does Production AI Agent Ops achieve 0.00 PDPA leak rate, FOR UPDATE HITL/DLQ locking, and 62.78% LLM cost reduction?"
+        defaultQuestion={t.topBarDefaultQuestion}
       />
 
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/15">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/15">
               <Bot className="h-5 w-5 text-cyan-300" />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight text-slate-50 sm:text-xl">
-                Production AI Agent Ops
+                {t.headerTitle}
               </h1>
-              <p className="text-xs text-slate-400">
-                No-Login Live Control Plane • LangGraph State Machine • PDPA Redaction • HITL •
-                Idempotent Retry + DLQ
-              </p>
+              <p className="text-xs text-slate-400">{t.headerSubtitle}</p>
             </div>
           </div>
 
           <span className="rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1 font-mono text-xs text-slate-400">
-            endpoint: {API_PROXY_PREFIX}
+            {t.endpointLabel}: {API_PROXY_PREFIX}
           </span>
         </div>
 

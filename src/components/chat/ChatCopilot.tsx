@@ -8,11 +8,14 @@ import {
   Bot,
   CheckCircle2,
   Cpu,
+  RotateCcw,
   Send,
   ShieldAlert,
   Sparkles,
   User,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { translations } from "@/lib/i18n/translations";
 import { renderInlineMarkdown } from "@/components/portfolio/MarkdownArticle";
 
 interface Citation {
@@ -42,39 +45,15 @@ interface ChatCopilotProps {
   projectScopes: ScopeOption[];
 }
 
-const STARTER_CHIPS: Array<{ label: string; scope: string; prompt: string }> = [
-  {
-    label: "Compare Project #1 vs #2",
-    scope: "all",
-    prompt:
-      "Compare Apec's Enterprise RAG Ops Copilot (Project #1) vs Production AI Agent Ops (Project #2) architecture and benchmarks.",
-  },
-  {
-    label: "25/25 Eval & $0 Guardrails",
-    scope: "enterprise-rag-ops-copilot",
-    prompt:
-      "How does Project #1 achieve 25/25 live eval and prevent hallucinations at $0 guardrail cost?",
-  },
-  {
-    label: "0.00 PDPA & 62.78% Cost Cut",
-    scope: "production-ai-agent-ops",
-    prompt:
-      "How does Project #2 enforce 0.00 PDPA PII leak rate and achieve 62.78% LLM cost reduction?",
-  },
-  {
-    label: "ถามเป็นภาษาไทย (TH)",
-    scope: "all",
-    prompt:
-      "สรุปจุดแข็งของโปรเจกต์ 1 และโปรเจกต์ 2 สำหรับตำแหน่ง AI / AI Automation Engineer แบบกระชับ",
-  },
-  {
-    label: "Test Out-of-Scope Refusal",
-    scope: "all",
-    prompt: "What is Apec's home address and private bank account number?",
-  },
-];
+type ChatErrorState =
+  | { type: "network" }
+  | { type: "server"; status: number; message?: string }
+  | null;
 
 export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
+  const { lang } = useLanguage();
+  const t = translations[lang].chat;
+
   const searchParams = useSearchParams();
   const initialScope = searchParams.get("scope") || "all";
   const initialQuery = searchParams.get("q") || "";
@@ -83,21 +62,21 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
   const [input, setInput] = useState<string>(initialQuery);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errorState, setErrorState] = useState<ChatErrorState>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
 
   const scopes: ScopeOption[] = [
-    { value: "all", label: "All Portfolio SOT" },
+    { value: "all", label: t.allScopeLabel },
     ...projectScopes,
-    { value: "profile", label: "About Apec & Hiring" },
+    { value: "profile", label: t.profileScopeLabel },
   ];
 
   const sendMessage = async (textToSend: string, targetScope = scope) => {
     const trimmed = textToSend.trim();
     if (!trimmed || loading) return;
 
-    setError(null);
+    setErrorState(null);
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       role: "user",
@@ -117,7 +96,11 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || `Request failed (${res.status}). Please retry.`);
+        setErrorState({
+          type: "server",
+          status: res.status,
+          message: typeof data?.error === "string" ? data.error : undefined,
+        });
         return;
       }
 
@@ -133,7 +116,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
       };
       setMessages((prev) => [...prev, assistantMsg]);
     } catch {
-      setError("Network error while calling /api/chat. Check your connection and try again.");
+      setErrorState({ type: "network" });
     } finally {
       setLoading(false);
     }
@@ -142,6 +125,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
   useEffect(() => {
     setScope(initialScope);
     if (initialQuery) {
+      // Auto-Fill Only: populate input and focus without auto-submitting
       setInput(initialQuery);
       inputRef.current?.focus();
     }
@@ -159,10 +143,26 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
   };
 
   const handleSelectChip = (chip: { scope: string; prompt: string }) => {
+    // Auto-Fill Only: fill scope + input and focus without auto-submitting
     setScope(chip.scope);
     setInput(chip.prompt);
     inputRef.current?.focus();
   };
+
+  const handleClearChat = () => {
+    if (loading) return;
+    setMessages([]);
+    setInput("");
+    setErrorState(null);
+    inputRef.current?.focus();
+  };
+
+  const errorMessage =
+    errorState?.type === "network"
+      ? t.networkError
+      : errorState?.type === "server"
+        ? errorState.message || `${t.requestFailedPrefix} (${errorState.status})`
+        : null;
 
   return (
     <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-4xl flex-col px-4 py-6 sm:px-6">
@@ -171,24 +171,22 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
         <div>
           <div className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 font-mono text-[11px] font-medium text-[var(--accent)]">
             <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Zero-Cold-Start · File-Driven Markdown SOT</span>
+            <span>{t.badge}</span>
           </div>
           <h1 className="mt-2.5 text-2xl font-bold tracking-tight text-[var(--foreground)]">
-            AI Portfolio Copilot
+            {t.title}
           </h1>
-          <p className="mt-0.5 text-sm text-[var(--muted)]">
-            Ask in Thai, English, or Code-Mixed about architecture trade-offs, verified metrics, or hiring readiness.
-          </p>
+          <p className="mt-0.5 text-sm text-[var(--muted)]">{t.subtitle}</p>
         </div>
         <span className="font-mono text-xs text-[var(--accent-emerald)]">
-          3-Stage $0 Guardrails Active
+          {t.guardrailsActive}
         </span>
       </div>
 
       {/* Scope Switcher */}
       <div className="mb-4 flex flex-wrap items-center gap-1.5">
         <span className="mr-1 font-mono text-[11px] font-medium text-[var(--muted)]">
-          Scope:
+          {t.scopeLabel}
         </span>
         {scopes.map((item) => {
           const active = scope === item.value;
@@ -199,7 +197,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
               onClick={() => setScope(item.value)}
               className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
                 active
-                  ? "bg-[var(--accent)] text-[var(--accent-fg)] font-semibold"
+                  ? "bg-[var(--accent)] font-semibold text-[var(--accent-fg)]"
                   : "border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
               }`}
             >
@@ -207,6 +205,18 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
             </button>
           );
         })}
+
+        {(messages.length > 0 || input.length > 0) && (
+          <button
+            type="button"
+            onClick={handleClearChat}
+            disabled={loading}
+            className="ml-auto inline-flex cursor-pointer items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <RotateCcw className="h-3 w-3" aria-hidden="true" />
+            <span>{t.clearButton}</span>
+          </button>
+        )}
       </div>
 
       {/* Conversation Area */}
@@ -217,17 +227,17 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
               <Bot className="h-5 w-5" aria-hidden="true" />
             </div>
             <h2 className="mt-4 text-lg font-semibold text-[var(--foreground)]">
-              Ask about Apec&apos;s Production AI Systems
+              {t.emptyTitle}
             </h2>
             <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-[var(--muted)]">
-              Every answer is strictly grounded in version-controlled Markdown (
+              {t.emptyDescPrefix}
               <code className="rounded border border-[var(--border)] bg-[var(--surface-elevated)] px-1.5 py-0.5 font-mono text-xs text-[var(--accent)]">
                 content/
               </code>
-              ) with clickable source citations. Select a prompt below to pre-fill the input box, then press Send.
+              {t.emptyDescSuffix}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {STARTER_CHIPS.map((chip) => {
+              {t.starterChips.map((chip) => {
                 const selected = input.trim() === chip.prompt.trim();
                 return (
                   <button
@@ -327,12 +337,14 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                       {msg.refused ? (
                         <span className="inline-flex items-center gap-1 text-amber-500">
                           <ShieldAlert className="h-3.5 w-3.5" aria-hidden="true" />
-                          <span>Guardrail Active ({msg.refusalReason})</span>
+                          <span>
+                            {t.guardrailActive} ({msg.refusalReason})
+                          </span>
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-[var(--accent-emerald)]">
                           <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-                          <span>Grounded SOT</span>
+                          <span>{t.groundedSot}</span>
                         </span>
                       )}
                       {msg.modelUsed && (
@@ -366,26 +378,26 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--background)] text-[var(--accent)]">
               <Bot className="h-4 w-4 animate-pulse" aria-hidden="true" />
             </div>
-            <span>Retrieving SOT &amp; generating grounded answer…</span>
+            <span>{t.loadingText}</span>
           </div>
         )}
         <div ref={endRef} />
       </div>
 
-      {error && (
+      {errorMessage && (
         <div
           role="alert"
           aria-live="polite"
           className="mt-3 rounded-lg border border-rose-500/40 bg-rose-500/10 px-4 py-2.5 text-xs text-rose-500"
         >
-          {error}
+          {errorMessage}
         </div>
       )}
 
       {/* Input Bar */}
       <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
         <label htmlFor="copilot-input" className="sr-only">
-          Ask AI Portfolio Copilot
+          {t.inputLabel}
         </label>
         <input
           id="copilot-input"
@@ -395,7 +407,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           maxLength={500}
-          placeholder="Ask in English or Thai (e.g. Compare Project #1 vs #2)…"
+          placeholder={t.inputPlaceholder}
           className="flex-1 rounded-lg border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
         />
         <button
@@ -404,7 +416,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
           className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-fg)] transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Send className="h-4 w-4" aria-hidden="true" />
-          <span className="hidden sm:inline">Send</span>
+          <span className="hidden sm:inline">{t.sendButton}</span>
         </button>
       </form>
     </div>

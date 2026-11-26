@@ -15,7 +15,9 @@ import { EvalAndCorpusWorkspace } from "@/components/demos/rag-copilot/EvalAndCo
 import { RagWorkspace } from "@/components/demos/rag-copilot/RagWorkspace";
 import { TriageWorkspace } from "@/components/demos/rag-copilot/TriageWorkspace";
 import { API_PROXY_PREFIX, fetchHealth } from "@/lib/demos/rag/api";
-import type { HealthResponse, LanguageMode } from "@/lib/demos/rag/types";
+import type { HealthResponse } from "@/lib/demos/rag/types";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { translations } from "@/lib/i18n/translations";
 
 type ActiveTab = "rag" | "triage" | "eval";
 
@@ -23,8 +25,11 @@ const HEALTH_RETRY_INTERVAL_MS = 5_000;
 const HEALTH_MAX_ATTEMPTS = 10;
 
 export default function RagCopilotDemoPage() {
+  const { lang: uiLang, toggleLang } = useLanguage();
+  const t = translations[uiLang].ragCopilot;
+  const navT = translations[uiLang].nav;
+
   const [activeTab, setActiveTab] = useState<ActiveTab>("rag");
-  const [uiLang, setUiLang] = useState<LanguageMode>("en");
   const [healthState, setHealthState] = useState<"warming" | "ready" | "offline">("warming");
   const [healthInfo, setHealthInfo] = useState<HealthResponse | null>(null);
   const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -87,25 +92,23 @@ export default function RagCopilotDemoPage() {
     <div className="demo-theme-scope min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <DemoTopBar
         projectSlug="enterprise-rag-ops-copilot"
-        title="Project #1 · Enterprise RAG Ops Copilot"
+        title={t.topBarTitle}
         repoUrl="https://github.com/ApecSinlapachai/enterprise-rag-ops-copilot"
-        defaultQuestion="How does Enterprise RAG Ops Copilot prevent hallucinations at $0 guardrail cost and achieve 25/25 live eval?"
+        defaultQuestion={t.topBarDefaultQuestion}
       />
 
       {/* Demo Header & Tabs */}
       <div className="border-b border-slate-800/80 bg-[var(--background)]/90">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/20 ring-1 ring-indigo-500/40">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600/20 ring-1 ring-indigo-500/40">
               <Bot className="h-5 w-5 text-indigo-400" />
             </div>
             <div>
               <h1 className="text-base font-bold tracking-tight text-slate-100 sm:text-lg">
-                Enterprise RAG Ops Copilot
+                {t.headerTitle}
               </h1>
-              <p className="text-xs text-slate-400">
-                Thai–English Hybrid RAG • Pydantic v2 Ticket Triage • 25-Case Eval Gate
-              </p>
+              <p className="text-xs text-slate-400">{t.headerSubtitle}</p>
             </div>
           </div>
 
@@ -113,7 +116,7 @@ export default function RagCopilotDemoPage() {
             <button
               type="button"
               onClick={() => startHealthCheck()}
-              title={`API proxied via ${API_PROXY_PREFIX}`}
+              title={`${t.proxyTitlePrefix} ${API_PROXY_PREFIX}`}
               className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
                 healthState === "ready"
                   ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
@@ -129,16 +132,18 @@ export default function RagCopilotDemoPage() {
               )}
               <span>
                 {healthState === "ready"
-                  ? `API Ready (v${healthInfo?.version ?? "0.1.0"})`
+                  ? `${t.apiReadyPrefix} (v${healthInfo?.version ?? "0.1.0"})`
                   : healthState === "warming"
-                    ? "Warming API…"
-                    : "API Offline / Cold"}
+                    ? t.apiWarming
+                    : t.apiOffline}
               </span>
             </button>
 
             <button
               type="button"
-              onClick={() => setUiLang((prev) => (prev === "en" ? "th" : "en"))}
+              onClick={toggleLang}
+              aria-label={navT.toggleLangAria}
+              title={navT.toggleLangTitle}
               className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-semibold text-slate-200 transition-colors hover:border-indigo-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             >
               <Languages className="h-3.5 w-3.5 text-indigo-400" aria-hidden="true" />
@@ -152,19 +157,19 @@ export default function RagCopilotDemoPage() {
             active={activeTab === "rag"}
             onClick={() => setActiveTab("rag")}
             icon={<Bot className="h-4 w-4" aria-hidden="true" />}
-            label={uiLang === "th" ? "ถาม-ตอบ Hybrid RAG" : "Hybrid RAG Copilot"}
+            label={t.tabs.rag}
           />
           <TabButton
             active={activeTab === "triage"}
             onClick={() => setActiveTab("triage")}
             icon={<Ticket className="h-4 w-4" aria-hidden="true" />}
-            label={uiLang === "th" ? "คัดแยก Ticket Triage" : "Ticket Triage"}
+            label={t.tabs.triage}
           />
           <TabButton
             active={activeTab === "eval"}
             onClick={() => setActiveTab("eval")}
             icon={<BarChart3 className="h-4 w-4" aria-hidden="true" />}
-            label={uiLang === "th" ? "ผล Eval Scorecard และคลังเอกสาร" : "Eval Scorecard & Corpus"}
+            label={t.tabs.eval}
           />
         </div>
       </div>
