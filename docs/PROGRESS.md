@@ -1,7 +1,7 @@
 # PROGRESS — apec-ai-portfolio
 
 - **Last Updated:** 2026-11-26
-- **Current Phase:** Local Browser QA, UI/Light-Mode Polish & GitHub Push Complete → Ready for Vercel Hobby Deploy & Post-Launch GitHub Sync
+- **Current Phase:** Phase 5b Complete — Live on Vercel Hobby (`https://apec-ai-portfolio.vercel.app/`) & Post-Launch GitHub/Resume/AI OS Sync Done
 
 > **Handoff Rule:** Update this file immediately after every completed milestone alongside `git commit`.
 
@@ -16,13 +16,14 @@
   - Verified all 5 routes live in browser with `0` console errors and `0` direct `*.onrender.com` calls (live Render proxies returned `200`/`201`).
   - Fixed mobile (`390px`) header overflow (`Navbar.tsx`), inline Markdown rendering in headings & chat (`MarkdownArticle.tsx`, `ChatCopilot.tsx`), and full Light Mode support inside `/demos/rag-copilot` and `/demos/agent-ops` (`globals.css` `.demo-theme-scope`).
   - Pushed public repo to `https://github.com/ApecSinlapachai/apec-ai-portfolio`.
+- [x] **Phase 5b — Live Vercel Smoke Test, Output Cap Polish & Post-Launch Sync:**
+  - Live Vercel Hobby deployment (`https://apec-ai-portfolio.vercel.app/`) smoke-tested across `/`, `/chat`, `/demos/rag-copilot`, and `/demos/agent-ops` with `0` console errors, `0` failed requests, `0` direct `*.onrender.com` calls, Light/Dark mode verified, EN (`gemini-3.1-flash-lite`) & TH (`gemini-3.5-flash-lite`) grounded citations verified, and Stage 0 `BLOCKED_INJECTION` verified (`1 ms`, `$0` LLM spend).
+  - Raised `/api/chat` `maxOutputTokens` from `700` to `1200` (`src/lib/chat/gemini.ts`) to prevent mid-sentence truncation on long Thai multi-project summaries.
+  - Synced live URLs into `enterprise-rag-ops-copilot/README.md`, `production-ai-agent-ops/README.md`, `ApecSinlapachai/README.md`, `resume_apec_ai_automation.html`, and AI OS SSOT (`portfolio_rag_and_sot_architecture.md`, `Triage.md`).
 - [x] **Automated Verification:** `eslint .`, `tsc --noEmit`, `vitest run` (`9/9 passed`), and `next build` (`11/11 routes`) all exit `0`.
 
-## In Progress / Next Up (Phase 5b — Vercel Deploy & Post-Launch Sync)
-1. **Deploy to Vercel Hobby (`$0/mo`):** Import `ApecSinlapachai/apec-ai-portfolio` on Vercel with `GEMINI_API_KEY`, `RAG_API_PROXY_TARGET`, and `AGENT_API_PROXY_TARGET`, then smoke-test the live URL.
-2. **Post-Launch Sync — GitHub Project #1 (`enterprise-rag-ops-copilot`):** Update `README.md` Live Demo link to `https://<portfolio-domain>/demos/rag-copilot` and add `"Ask AI about this project"` link to `/chat?scope=enterprise-rag-ops-copilot`.
-3. **Post-Launch Sync — GitHub Project #2 (`production-ai-agent-ops`):** Update `README.md` Live Demo link to `https://<portfolio-domain>/demos/agent-ops` and add `"Ask AI about this project"` link to `/chat?scope=production-ai-agent-ops`.
-4. **Post-Launch Sync — Profile README, Resume & AI OS Rollups:** Update `ApecSinlapachai/README.md`, `resume_apec_ai_automation.html`, `portfolio_rag_and_sot_architecture.md`, and `Triage.md`.
+## In Progress / Next Up
+- Monitor Vercel auto-deploy after `maxOutputTokens: 1200` update and keep `content/projects/` updated via 1-file Markdown additions as new projects ship.
 
 ## Blockers / Gotchas for Next Agent
 - Keep all browser calls in `/demos/*` routed through `/api/proxy/rag/*` and `/api/proxy/agent/*` (zero direct `*.onrender.com` calls).

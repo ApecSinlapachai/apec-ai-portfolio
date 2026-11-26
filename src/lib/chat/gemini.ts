@@ -121,7 +121,7 @@ export async function generateGroundedAnswer(
         config: {
           systemInstruction,
           temperature: 0.2,
-          maxOutputTokens: 700,
+          maxOutputTokens: 1200,
         },
       });
 

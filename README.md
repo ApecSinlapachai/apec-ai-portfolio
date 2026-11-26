@@ -2,6 +2,8 @@
 
 > **One unified Next.js 15 web hub** showcasing production AI engineering proof: live interactive demos for **Enterprise RAG Ops Copilot** (`/demos/rag-copilot`) and **Production AI Agent Ops** (`/demos/agent-ops`), extensible Markdown case studies (`/projects/[slug]`), and a **Zero-Cold-Start AI Portfolio Copilot** (`/chat`).
 
+🔗 **Live Portfolio Hub:** [https://apec-ai-portfolio.vercel.app/](https://apec-ai-portfolio.vercel.app/)
+
 ## Architecture
 
 ```mermaid

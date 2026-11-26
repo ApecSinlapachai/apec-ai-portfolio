@@ -12,5 +12,6 @@
 - `/projects/fast-lead-automation` — Deterministic Automation Case Study (85/85 Automated Offline Tests, $0/mo SaaS Cost)
 
 ## Links
+- Live Portfolio Hub: https://apec-ai-portfolio.vercel.app/
 - GitHub: https://github.com/ApecSinlapachai
 - AI Automation TIL Notes: https://github.com/ApecSinlapachai/ai-automation-til
