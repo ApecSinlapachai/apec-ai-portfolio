@@ -32,9 +32,15 @@
   - **Track C (Pages, Copilot & Live Demos i18n Sync):** Extracted client views `HomeView.tsx` and `ProjectDetailView.tsx` while keeping `src/app/page.tsx` and `src/app/projects/[slug]/page.tsx` as SSG Server Components; surfaced `project.summary[lang]` prominently on project cards and case studies; translated `ChatCopilot.tsx` (preserving Auto-Fill Only on all presets/chips); synced `/demos/rag-copilot` `uiLang` directly with `useLanguage()`; and translated `/demos/agent-ops` header, subtitle, health badges, and tabs.
   - **Track D (Verification & Browser QA):** Verified with `npm run verify` (`eslint` 0 errors, `tsc` 0 errors, `vitest` 9/9 passed, `next build` 12/12 routes incl. `/icon.svg`) and full local Browser QA (`http://localhost:3005`) across EN/TH persistence on reload, Dark/Light mode, Desktop `1440px`, Mobile `390px` (zero horizontal overflow in both EN & TH), `/icon.svg` HTTP 200 + brand SVG mark, Auto-Fill Only verified (`0` auto-submitted `/api/chat` requests), `0` console/hydration errors, and `0` direct `*.onrender.com` calls.
 
-## In Progress / Next Up
-1. Keep `content/projects/` updated via 1-file Markdown additions as new projects ship (each conforming to `ProjectFrontmatterSchema` including `summary: { en, th }`).
-2. Post-deploy Vercel smoke check on `https://apec-ai-portfolio.vercel.app/` after push.
+## In Progress / Next Up (Phase 8 Backlog — Noted, Not Implemented Yet)
+1. **HR-Friendly Project Summaries & Localized Metric Boxes:**
+   - Rewrite both flagship project summaries (`enterprise-rag-ops-copilot` and `production-ai-agent-ops`) so general HR / non-technical readers immediately understand: *Who does this help? What real problem caused it? Why does this system exist?* (keep card summaries concise, then expand in detail on each Demo page — see item #3).
+   - Remove redundant benchmark strings from the summary paragraph (e.g., `"ผลทดสอบบนระบบจริงผ่าน Golden Eval 25/25 เคส (100%) ที่ความเร็วเฉลี่ย 767 ms, ผ่าน pytest 47/47 เคส และมีต้นทุน LLM เป็น $0 สำหรับคำถามที่ถูกปฏิเสธ"`) because those metrics are already displayed in the metric boxes below.
+   - Localize the metric box labels/values into Thai when `lang === "th"`.
+2. **Language Toggle Label:** Change the switcher button text from `EN/ไทย` to `EN/TH`.
+3. **Demo Page Project Explanations:** Add a clear, expanded project explanation section inside each Demo page (`/demos/rag-copilot` and `/demos/agent-ops`), taking advantage of the extra space to explain the system in plain, accessible language for general audiences.
+4. **Red Maple Leaf Brand Logo:** Replace both the browser tab favicon (`src/app/icon.svg`) and the Navbar brand logo (`BrandMicrochipMark` in `Navbar.tsx`) with a custom red maple leaf icon.
+5. **Post-Deploy & Ongoing:** Keep `content/projects/` updated via 1-file Markdown additions as new projects ship, and run post-deploy smoke checks on `https://apec-ai-portfolio.vercel.app/` after pushing changes.
 
 ## Blockers / Gotchas for Next Agent
 - Keep all browser calls in `/demos/*` routed through `/api/proxy/rag/*` and `/api/proxy/agent/*` (zero direct `*.onrender.com` calls).
