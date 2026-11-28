@@ -10,6 +10,9 @@ export interface HealthResponse {
   status: string;
   version: string;
   database_connected: boolean;
+  chat_model?: string;
+  complex_model?: string;
+  embed_model?: string;
 }
 
 export interface CitationItem {

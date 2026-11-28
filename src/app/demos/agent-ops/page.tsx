@@ -8,8 +8,19 @@ import {
   ShieldAlert,
   Workflow,
 } from "lucide-react";
-import { DemoTopBar } from "@/components/layout/Navbar";
+
+import {
+  DemoHealthBanner,
+  type DemoHealthStatus,
+  type DemoTelemetryChip,
+} from "@/components/demos/DemoHealthBanner";
 import { DemoProjectExplainer } from "@/components/demos/DemoProjectExplainer";
+import { DemoTabBar, type DemoTabItem } from "@/components/demos/DemoTabBar";
+import { ApprovalsQueue } from "@/components/demos/agent-ops/ApprovalsQueue";
+import { BenchmarkScorecard } from "@/components/demos/agent-ops/BenchmarkScorecard";
+import { DlqPanel } from "@/components/demos/agent-ops/DlqPanel";
+import { WorkflowSandbox } from "@/components/demos/agent-ops/WorkflowSandbox";
+import { DemoTopBar } from "@/components/layout/Navbar";
 import {
   API_PROXY_PREFIX,
   fetchBenchmark,
@@ -25,11 +36,6 @@ import type {
   HealthResponse,
   RunResponse,
 } from "@/lib/demos/agent/types";
-import { ApprovalsQueue } from "@/components/demos/agent-ops/ApprovalsQueue";
-import { BenchmarkScorecard } from "@/components/demos/agent-ops/BenchmarkScorecard";
-import { DlqPanel } from "@/components/demos/agent-ops/DlqPanel";
-import { HealthBanner } from "@/components/demos/agent-ops/HealthBanner";
-import { WorkflowSandbox } from "@/components/demos/agent-ops/WorkflowSandbox";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { translations } from "@/lib/i18n/translations";
 
@@ -46,12 +52,14 @@ const HEALTH_MAX_RETRIES = 10;
 export default function AgentOpsDemoPage() {
   const { lang } = useLanguage();
   const t = translations[lang].agentOps;
+  const healthT = translations[lang].demoHealth;
 
   const [activeTab, setActiveTab] = useState<TabId>("sandbox");
 
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [healthLoading, setHealthLoading] = useState(true);
-  const [healthErrorState, setHealthErrorState] = useState<HealthErrorState>(null);
+  const [healthErrorState, setHealthErrorState] =
+    useState<HealthErrorState>(null);
   const [wakingUp, setWakingUp] = useState(false);
 
   const [runs, setRuns] = useState<RunResponse[]>([]);
@@ -73,7 +81,7 @@ export default function AgentOpsDemoPage() {
       setApprovals(approvalsRes);
       setDlqJobs(dlqRes);
     } catch {
-      // Errors surfaced via HealthBanner
+      // Errors surfaced via DemoHealthBanner
     } finally {
       setDataLoading(false);
     }
@@ -86,7 +94,7 @@ export default function AgentOpsDemoPage() {
       setBenchmarkError(null);
     } catch (err) {
       setBenchmarkError(
-        err instanceof Error ? err.message : t.benchmarkLoadError
+        err instanceof Error ? err.message : t.benchmarkLoadError,
       );
     }
   }, [t.benchmarkLoadError]);
@@ -134,7 +142,7 @@ export default function AgentOpsDemoPage() {
         }
       }
     },
-    [clearRetryTimer, loadBenchmark, loadOperationalData]
+    [clearRetryTimer, loadBenchmark, loadOperationalData],
   );
 
   useEffect(() => {
@@ -148,37 +156,75 @@ export default function AgentOpsDemoPage() {
 
   const healthError =
     healthErrorState?.type === "retrying"
-      ? `${t.waitingApiPrefix} ${API_PROXY_PREFIX} (${t.retryLabel} ${healthErrorState.attempt}/${HEALTH_MAX_RETRIES})...`
+      ? `${healthT.waitingApiPrefix} ${API_PROXY_PREFIX} (${healthT.retryLabel} ${healthErrorState.attempt}/${HEALTH_MAX_RETRIES})...`
       : healthErrorState?.type === "offline"
-        ? `${t.offlineApiPrefix} ${API_PROXY_PREFIX} (${HEALTH_MAX_RETRIES} ${t.offlineRetriesSuffix}).`
+        ? `${healthT.offlineApiPrefix} ${API_PROXY_PREFIX} (${HEALTH_MAX_RETRIES} ${healthT.offlineRetriesSuffix}).`
         : null;
 
-  const pendingApprovalsCount = approvals.filter((a) => a.status === "PENDING").length;
+  const isOk = health?.status === "ok" && health?.database === "connected";
+  const healthStatus: DemoHealthStatus = wakingUp
+    ? "warming"
+    : healthLoading
+      ? "checking"
+      : isOk
+        ? "ready"
+        : health
+          ? "degraded"
+          : "offline";
+
+  const healthChips: DemoTelemetryChip[] = health
+    ? [
+        {
+          id: "auth-mode",
+          label: `auth: ${health.auth_mode}`,
+          icon: "shield",
+          tone: "cyan",
+        },
+        {
+          id: "fast-model",
+          label: `FAST: ${health.fast_model}`,
+          icon: "cpu",
+          tone: "emerald",
+        },
+        {
+          id: "complex-model",
+          label: `COMPLEX: ${health.complex_model}`,
+          icon: "cpu",
+          tone: "sky",
+        },
+      ]
+    : [];
+
+  const pendingApprovalsCount = approvals.filter(
+    (a) => a.status === "PENDING",
+  ).length;
   const openDlqCount = dlqJobs.filter((j) => j.status === "OPEN").length;
 
-  const tabs: {
-    id: TabId;
-    label: string;
-    icon: typeof Workflow;
-    badge?: number;
-    badgeColor?: string;
-  }[] = [
-    { id: "sandbox", label: t.tabs.sandbox, icon: Workflow },
+  const tabs: DemoTabItem<TabId>[] = [
+    {
+      id: "sandbox",
+      label: t.tabs.sandbox,
+      icon: <Workflow className="h-4 w-4 shrink-0" aria-hidden="true" />,
+    },
     {
       id: "approvals",
       label: t.tabs.approvals,
-      icon: ShieldAlert,
+      icon: <ShieldAlert className="h-4 w-4 shrink-0" aria-hidden="true" />,
       badge: pendingApprovalsCount,
-      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+      badgeTone: "amber",
     },
     {
       id: "dlq",
       label: t.tabs.dlq,
-      icon: AlertOctagon,
+      icon: <AlertOctagon className="h-4 w-4 shrink-0" aria-hidden="true" />,
       badge: openDlqCount,
-      badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/40",
+      badgeTone: "rose",
     },
-    { id: "benchmark", label: t.tabs.benchmark, icon: BarChart3 },
+    {
+      id: "benchmark",
+      label: t.tabs.benchmark,
+      icon: <BarChart3 className="h-4 w-4 shrink-0" aria-hidden="true" />,
+    },
   ];
 
   return (
@@ -190,69 +236,45 @@ export default function AgentOpsDemoPage() {
         defaultQuestion={t.topBarDefaultQuestion}
       />
 
-      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/15">
-              <Bot className="h-5 w-5 text-cyan-300" />
+      <div className="mx-auto max-w-6xl space-y-5 px-4 py-6 sm:px-6">
+        <header className="bg-engineering-grid relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
+          <div className="flex items-start gap-3.5 sm:items-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/15">
+              <Bot className="h-5 w-5 text-cyan-300" aria-hidden="true" />
             </div>
-            <div>
-              <h1 className="text-lg font-bold tracking-tight text-slate-50 sm:text-xl">
+            <div className="min-w-0">
+              <h1 className="text-lg font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">
                 {t.headerTitle}
               </h1>
-              <p className="text-xs text-slate-400">{t.headerSubtitle}</p>
+              <p className="mt-1 text-xs leading-relaxed text-[var(--muted)] sm:text-sm">
+                {t.headerSubtitle}
+              </p>
             </div>
           </div>
+        </header>
 
-          <span className="rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1 font-mono text-xs text-slate-400">
-            {t.endpointLabel}: {API_PROXY_PREFIX}
-          </span>
-        </div>
+        <DemoHealthBanner
+          status={healthStatus}
+          statusDetail={health && !isOk ? health.database : undefined}
+          chips={healthChips}
+          endpoint={API_PROXY_PREFIX}
+          accent="cyan"
+          loading={healthLoading}
+          error={healthError}
+          onRetry={() => void checkHealth(0)}
+        />
 
-        <div className="mb-5">
-          <HealthBanner
-            health={health}
-            loading={healthLoading}
-            error={healthError}
-            wakingUp={wakingUp}
-            onRetry={() => void checkHealth(0)}
-          />
-        </div>
+        <DemoProjectExplainer explainer={t.explainer} accent="emerald" />
 
-        <div className="mb-5">
-          <DemoProjectExplainer explainer={t.explainer} accent="emerald" />
-        </div>
+        <DemoTabBar
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={setActiveTab}
+          accent="cyan"
+          ariaLabel={t.headerTitle}
+        />
 
-        <nav className="mb-6 flex flex-wrap gap-2 border-b border-slate-800 pb-3">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const active = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
-                  active
-                    ? "border-cyan-500/60 bg-cyan-500/15 text-cyan-200"
-                    : "border-slate-800 bg-slate-900/70 text-slate-300 hover:border-slate-700 hover:bg-slate-900"
-                }`}
-              >
-                <Icon className="h-4 w-4" aria-hidden="true" />
-                <span>{tab.label}</span>
-                {typeof tab.badge === "number" && tab.badge > 0 && (
-                  <span
-                    className={`tabular-nums rounded-full border px-1.5 py-0.5 font-mono text-[10px] ${tab.badgeColor}`}
-                  >
-                    {tab.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div>
+        <div role="tabpanel">
           {activeTab === "sandbox" && (
             <WorkflowSandbox
               recentRuns={runs}

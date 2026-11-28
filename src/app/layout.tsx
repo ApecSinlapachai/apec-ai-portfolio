@@ -1,22 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
-import {
-  IBM_Plex_Sans_Thai,
-  Inter,
-  JetBrains_Mono,
-  Space_Grotesk,
-} from "next/font/google";
+import { Anuphan, Inter, JetBrains_Mono } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +13,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const ibmPlexThai = IBM_Plex_Sans_Thai({
+const anuphan = Anuphan({
   subsets: ["thai", "latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-thai",
@@ -98,7 +86,7 @@ export default function RootLayout({
       lang="en"
       data-lang="en"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexThai.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${anuphan.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />

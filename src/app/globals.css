@@ -45,7 +45,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-display), var(--font-thai), var(--font-sans), sans-serif;
+  font-family: var(--font-sans), var(--font-thai), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   text-wrap: balance;
 }
 

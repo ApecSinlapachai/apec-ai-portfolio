@@ -51,6 +51,25 @@ export interface TranslationDictionary {
     githubRepo: string;
     askAiArchitecture: string;
   };
+  demoHealth: {
+    apiStatusLabel: string;
+    onlinePg16: string;
+    wakingContainer: string;
+    checkingHealth: string;
+    degradedLabel: string;
+    offlineUnreachable: string;
+    pingHealth: string;
+    coldStartHint: string;
+    endpointInfoAria: string;
+    endpointPopoverTitle: string;
+    endpointPopoverDesc: string;
+    endpointLabel: string;
+    ragFallbackStack: string;
+    waitingApiPrefix: string;
+    retryLabel: string;
+    offlineApiPrefix: string;
+    offlineRetriesSuffix: string;
+  };
   footer: {
     title: string;
     subtitle: string;
@@ -170,6 +189,27 @@ export const translations: Record<Lang, TranslationDictionary> = {
       sameOriginProxy: "Same-Origin Proxy",
       githubRepo: "GitHub Repo",
       askAiArchitecture: "Ask AI about architecture",
+    },
+    demoHealth: {
+      apiStatusLabel: "API Status:",
+      onlinePg16: "ONLINE • PG16 CONNECTED",
+      wakingContainer: "Waking Render Free Instance...",
+      checkingHealth: "Checking /health...",
+      degradedLabel: "DEGRADED",
+      offlineUnreachable: "UNREACHABLE",
+      pingHealth: "Ping /health",
+      coldStartHint:
+        "Free-tier containers sleep after inactivity and usually wake within 20–40 seconds.",
+      endpointInfoAria: "Show same-origin proxy endpoint details",
+      endpointPopoverTitle: "Same-Origin API Proxy",
+      endpointPopoverDesc:
+        "All browser requests stay on the portfolio origin via Next.js rewrites (zero direct cross-origin calls).",
+      endpointLabel: "endpoint",
+      ragFallbackStack: "PG16 + pgvector",
+      waitingApiPrefix: "Waiting for API via",
+      retryLabel: "retry",
+      offlineApiPrefix: "Could not connect to API via",
+      offlineRetriesSuffix: "retries",
     },
     footer: {
       title: "Apec Sinlapachai — AI & AI Automation Engineer",
@@ -408,6 +448,27 @@ export const translations: Record<Lang, TranslationDictionary> = {
       sameOriginProxy: "พร็อกซี Same-Origin",
       githubRepo: "โค้ด GitHub",
       askAiArchitecture: "ถาม AI เรื่องสถาปัตยกรรม",
+    },
+    demoHealth: {
+      apiStatusLabel: "สถานะ API:",
+      onlinePg16: "ออนไลน์ • เชื่อมต่อ PG16 แล้ว",
+      wakingContainer: "กำลังปลุก Render Free Instance...",
+      checkingHealth: "กำลังตรวจ /health...",
+      degradedLabel: "ทำงานลดระดับ",
+      offlineUnreachable: "ไม่สามารถเชื่อมต่อได้",
+      pingHealth: "Ping /health",
+      coldStartHint:
+        "Container แบบ Free-tier จะพักการทำงานเมื่อไม่มีการใช้งาน และมักใช้เวลาตื่นภายใน 20–40 วินาที",
+      endpointInfoAria: "ดูรายละเอียดพร็อกซี Same-Origin",
+      endpointPopoverTitle: "พร็อกซี API โดเมนเดียวกัน (Same-Origin)",
+      endpointPopoverDesc:
+        "คำขอจากเบราว์เซอร์ทั้งหมดวิ่งผ่าน Next.js rewrites บนโดเมนเดียวกัน (ไม่มีการเรียกข้ามโดเมนโดยตรง)",
+      endpointLabel: "endpoint",
+      ragFallbackStack: "PG16 + pgvector",
+      waitingApiPrefix: "กำลังรอการตอบกลับจาก API ผ่าน",
+      retryLabel: "ลองใหม่ครั้งที่",
+      offlineApiPrefix: "ไม่สามารถเชื่อมต่อ API ผ่าน",
+      offlineRetriesSuffix: "ครั้ง",
     },
     footer: {
       title: "Apec Sinlapachai — วิศวกร AI และระบบอัตโนมัติ (AI Automation)",

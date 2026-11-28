@@ -165,26 +165,33 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
         : null;
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-4xl flex-col px-4 py-6 sm:px-6">
-      {/* Header */}
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-4">
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 font-mono text-[11px] font-medium text-[var(--accent)]">
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+    <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-5xl flex-col px-4 py-6 sm:px-6 sm:py-8">
+      {/* Studio Header Card */}
+      <section className="bg-engineering-grid relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-7">
+        <div className="flex flex-wrap items-center justify-between gap-2.5">
+          <div className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--background)] px-2.5 py-1 font-mono text-[11px] font-medium text-[var(--accent)]">
+            <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             <span>{t.badge}</span>
           </div>
-          <h1 className="mt-2.5 text-2xl font-bold tracking-tight text-[var(--foreground)]">
-            {t.title}
-          </h1>
-          <p className="mt-0.5 text-sm text-[var(--muted)]">{t.subtitle}</p>
+          <span className="inline-flex items-center gap-2 rounded-md border border-[var(--border-strong)] bg-[var(--background)] px-2.5 py-1 font-mono text-xs font-medium text-[var(--accent-emerald)]">
+            <span
+              className="h-2 w-2 shrink-0 rounded-full bg-[var(--accent-emerald)]"
+              aria-hidden="true"
+            />
+            <span>{t.guardrailsActive}</span>
+          </span>
         </div>
-        <span className="font-mono text-xs text-[var(--accent-emerald)]">
-          {t.guardrailsActive}
-        </span>
-      </div>
 
-      {/* Scope Switcher */}
-      <div className="mb-4 flex flex-wrap items-center gap-1.5">
+        <h1 className="mt-4 text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
+          {t.title}
+        </h1>
+        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+          {t.subtitle}
+        </p>
+      </section>
+
+      {/* Scope Switcher Toolbar */}
+      <div className="mt-4 mb-4 flex flex-wrap items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 sm:px-4 sm:py-3">
         <span className="mr-1 font-mono text-[11px] font-medium text-[var(--muted)]">
           {t.scopeLabel}
         </span>
@@ -198,7 +205,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
               className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
                 active
                   ? "bg-[var(--accent)] font-semibold text-[var(--accent-fg)]"
-                  : "border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
+                  : "border border-[var(--border)] bg-[var(--background)] text-[var(--muted)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
               }`}
             >
               {item.label}
@@ -211,7 +218,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
             type="button"
             onClick={handleClearChat}
             disabled={loading}
-            className="ml-auto inline-flex cursor-pointer items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="ml-auto inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <RotateCcw className="h-3 w-3" aria-hidden="true" />
             <span>{t.clearButton}</span>
@@ -220,23 +227,23 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
       </div>
 
       {/* Conversation Area */}
-      <div className="flex-1 space-y-4 overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6">
+      <div className="min-w-0 flex-1 space-y-4 overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6">
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center py-8 text-center">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border-strong)] bg-[var(--background)] text-[var(--accent)]">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--border-strong)] bg-[var(--background)] text-[var(--accent)]">
               <Bot className="h-5 w-5" aria-hidden="true" />
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-[var(--foreground)]">
+            <h2 className="mt-4 text-lg font-bold tracking-tight text-[var(--foreground)] sm:text-xl">
               {t.emptyTitle}
             </h2>
             <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-[var(--muted)]">
               {t.emptyDescPrefix}
-              <code className="rounded border border-[var(--border)] bg-[var(--surface-elevated)] px-1.5 py-0.5 font-mono text-xs text-[var(--accent)]">
+              <code className="rounded border border-[var(--border)] bg-[var(--background)] px-1.5 py-0.5 font-mono text-xs text-[var(--accent)]">
                 content/
               </code>
               {t.emptyDescSuffix}
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <div className="mt-6 flex max-w-full flex-wrap justify-center gap-2">
               {t.starterChips.map((chip) => {
                 const selected = input.trim() === chip.prompt.trim();
                 return (
@@ -244,10 +251,10 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                     key={chip.label}
                     type="button"
                     onClick={() => handleSelectChip(chip)}
-                    className={`cursor-pointer rounded-lg border px-3.5 py-2 text-left text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
+                    className={`max-w-full cursor-pointer rounded-lg border px-3.5 py-2 text-left text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
                       selected
                         ? "border-[var(--accent)] bg-[var(--surface-elevated)] text-[var(--accent)]"
-                        : "border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
+                        : "border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
                     }`}
                   >
                     {chip.label}
@@ -260,7 +267,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
           messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex gap-3 ${
+              className={`flex min-w-0 gap-2.5 sm:gap-3 ${
                 msg.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
@@ -271,7 +278,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
               )}
 
               <div
-                className={`max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed ${
+                className={`min-w-0 max-w-[88%] break-words rounded-xl px-4 py-3 text-sm leading-relaxed sm:max-w-[82%] ${
                   msg.role === "user"
                     ? "bg-[var(--accent)] font-medium text-[var(--accent-fg)]"
                     : "border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
@@ -288,7 +295,9 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                             <span className="text-[var(--accent)]" aria-hidden="true">
                               •
                             </span>
-                            <span>{renderInlineMarkdown(trimmed.slice(2))}</span>
+                            <span className="min-w-0">
+                              {renderInlineMarkdown(trimmed.slice(2))}
+                            </span>
                           </div>
                         );
                       }
@@ -300,7 +309,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                 )}
 
                 {msg.role === "assistant" && (
-                  <div className="mt-3 space-y-2 border-t border-[var(--border)] pt-2.5">
+                  <div className="mt-3 space-y-2.5 border-t border-[var(--border)] pt-2.5">
                     {msg.citations && msg.citations.length > 0 && (
                       <div className="flex flex-wrap gap-1.5">
                         {msg.citations.map((cit) => {
@@ -312,10 +321,10 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                                 href={cit.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-[11px] font-medium text-[var(--accent-emerald)] transition-colors hover:border-[var(--accent-emerald)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                                className="inline-flex max-w-full items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 font-mono text-[11px] font-medium text-[var(--accent-emerald)] transition-colors hover:border-[var(--accent-emerald)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                               >
-                                <span>{cit.label}</span>
-                                <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                                <span className="truncate">{cit.label}</span>
+                                <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
                               </a>
                             );
                           }
@@ -323,38 +332,40 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
                             <Link
                               key={cit.id}
                               href={cit.url}
-                              className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-[11px] font-medium text-[var(--accent)] transition-colors hover:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                              className="inline-flex max-w-full items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 font-mono text-[11px] font-medium text-[var(--accent)] transition-colors hover:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                             >
-                              <span>{cit.label}</span>
-                              <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                              <span className="truncate">{cit.label}</span>
+                              <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
                             </Link>
                           );
                         })}
                       </div>
                     )}
 
-                    <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] text-[var(--muted)] tabular-nums">
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-[var(--muted)] tabular-nums">
                       {msg.refused ? (
-                        <span className="inline-flex items-center gap-1 text-amber-500">
-                          <ShieldAlert className="h-3.5 w-3.5" aria-hidden="true" />
+                        <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--border-strong)] bg-[var(--surface-elevated)] px-2 py-0.5 font-mono text-[11px] font-medium text-amber-400 [.light_&]:text-amber-700 tabular-nums">
+                          <ShieldAlert className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                           <span>
                             {t.guardrailActive} ({msg.refusalReason})
                           </span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[var(--accent-emerald)]">
-                          <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                        <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--accent-emerald)] tabular-nums">
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                           <span>{t.groundedSot}</span>
                         </span>
                       )}
                       {msg.modelUsed && (
-                        <span className="inline-flex items-center gap-1">
-                          <Cpu className="h-3 w-3" aria-hidden="true" />
+                        <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 font-mono text-[11px] text-[var(--muted)] tabular-nums">
+                          <Cpu className="h-3 w-3 shrink-0" aria-hidden="true" />
                           <span>{msg.modelUsed}</span>
                         </span>
                       )}
                       {typeof msg.latencyMs === "number" && (
-                        <span>{msg.latencyMs} ms</span>
+                        <span className="inline-flex items-center rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 font-mono text-[11px] text-[var(--muted)] tabular-nums">
+                          {msg.latencyMs} ms
+                        </span>
                       )}
                     </div>
                   </div>
@@ -375,7 +386,7 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
             aria-live="polite"
             className="flex items-center gap-3 text-sm text-[var(--muted)]"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--background)] text-[var(--accent)]">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--background)] text-[var(--accent)]">
               <Bot className="h-4 w-4 animate-pulse" aria-hidden="true" />
             </div>
             <span>{t.loadingText}</span>
@@ -388,14 +399,14 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
         <div
           role="alert"
           aria-live="polite"
-          className="mt-3 rounded-lg border border-rose-500/40 bg-rose-500/10 px-4 py-2.5 text-xs text-rose-500"
+          className="mt-3 rounded-lg border border-rose-500/40 bg-rose-500/10 px-4 py-2.5 text-xs font-medium text-rose-400 [.light_&]:text-rose-700"
         >
           {errorMessage}
         </div>
       )}
 
       {/* Input Bar */}
-      <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+      <form onSubmit={handleSubmit} className="mt-4 flex min-w-0 items-stretch gap-2">
         <label htmlFor="copilot-input" className="sr-only">
           {t.inputLabel}
         </label>
@@ -408,12 +419,12 @@ export default function ChatCopilot({ projectScopes }: ChatCopilotProps) {
           onChange={(e) => setInput(e.target.value)}
           maxLength={500}
           placeholder={t.inputPlaceholder}
-          className="flex-1 rounded-lg border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+          className="min-w-0 flex-1 rounded-lg border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-fg)] transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-[var(--accent-fg)] transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:cursor-not-allowed disabled:opacity-50 sm:px-5"
         >
           <Send className="h-4 w-4" aria-hidden="true" />
           <span className="hidden sm:inline">{t.sendButton}</span>
